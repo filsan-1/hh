@@ -1,0 +1,65 @@
+{% extends 'Base.html' %}
+{% load crispy_forms_tags %}
+{% load custom_filters %}
+{% load static %}
+{% block title %} PCOS FAQ {% endblock title %}
+{% block body_block %}
+
+<div class="faq">
+    <h1>Frequently Asked Questions about PCOS</h1>
+    <div>
+        <p>Let's clear up some doubts regarding PCOS and hormonal health.</p>
+    </div>
+    <button class="accordion">Why is it called PCOS?</button>
+    <div class="panel">
+        <p>First up, why the term "PCOS" anyway? PCOS stands for Polycystic Ovary Syndrome. It's a common hormonal disorder that affects women of reproductive age.</p>
+    </div>
+
+    <button class="accordion">Is hormonal imbalance common in PCOS?</button>
+    <div class="panel">
+        <p>Yes, hormonal imbalance is a hallmark of PCOS. Women with PCOS often have elevated levels of androgens (male hormones) and insulin, leading to symptoms like irregular periods, acne, and excessive hair growth.</p>
+    </div>
+
+    <button class="accordion">Why do women with PCOS experience irregular periods?</button>
+    <div class="panel">
+        <p>Irregular periods are common in PCOS due to hormonal imbalances. High levels of androgens can disrupt the normal menstrual cycle, leading to irregular or absent periods.</p>
+    </div>
+
+    <button class="accordion">What are the treatment options for PCOS?</button>
+    <div class="panel">
+        <p>Treatment for PCOS focuses on managing symptoms and reducing the risk of long-term complications like diabetes and heart disease. Lifestyle changes such as diet and exercise are often recommended, along with medications to regulate menstrual cycles and manage symptoms like acne and hirsutism.</p>
+    </div>
+
+    <button class="accordion">Can PCOS affect fertility?</button>
+    <div class="panel">
+        <p>Yes, PCOS can affect fertility by disrupting ovulation. Many women with PCOS struggle to conceive naturally and may require fertility treatments to help them get pregnant.</p>
+    </div>
+
+    <button class="accordion">What dietary changes can help manage PCOS symptoms?</button>
+    <div class="panel">
+        <p>A healthy diet rich in fruits, vegetables, lean proteins, and whole grains can help manage PCOS symptoms by promoting weight loss and improving insulin sensitivity. Limiting processed foods, sugary snacks, and refined carbohydrates may also be beneficial.</p>
+    </div>
+
+    <button class="accordion">Are there natural remedies for PCOS?</button>
+    <div class="panel">
+        <p>Some women find relief from PCOS symptoms with natural remedies such as herbal supplements, acupuncture, and stress-reduction techniques like yoga and meditation. However, it's essential to discuss any complementary therapies with your healthcare provider to ensure they're safe and effective for you.</p>
+    </div>
+</div>
+<script>
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+            }
+        });
+    }
+</script>
+
+{% endblock %}
