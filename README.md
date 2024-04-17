@@ -1,5 +1,5 @@
 <h1 align="center">
-    Hormone Harmony :drop_of_blood:
+    Hormone Harmony ::
 </h1>
 
 ## Tech Stack:
