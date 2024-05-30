@@ -14,5 +14,3 @@ urlpatterns = [
     path('period_detail/<int:period_id>/', views.period_detail, name='period_detail'),
     path('add_symptom/<int:period_id>/', views.add_symptom, name='add_symptom'),
 ]
-
-
