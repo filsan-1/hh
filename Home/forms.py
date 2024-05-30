@@ -7,12 +7,9 @@ class ContactForm(forms.Form):
     message = forms.CharField(widget=forms.Textarea, max_length=2000)
 
 class PeriodForm(forms.Form):
-    # Define the fields for the PeriodForm
-    pass
+    start_date = forms.DateField()
+    end_date = forms.DateField()
 
 class SymptomForm(forms.Form):
-    # Define the fields for the SymptomForm
-    pass
-
-
-    
+    symptom_name = forms.CharField(max_length=100)
+    severity = forms.IntegerField()
