@@ -6,7 +6,6 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Period, Symptom
 
-# Views for rendering templates
 def index(request):
     return render(request, 'Home/home.html')
 
@@ -22,7 +21,6 @@ def selfcare(request):
 class HomeView(ListView):
     template_name = 'Home/home.html'
 
-# View for handling contact form submission
 def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -44,7 +42,6 @@ def contact(request):
         form = ContactForm()
     return render(request, "Home/contact.html", {'form': form})
 
-# Views for period-related functionalities
 @login_required
 def add_period(request):
     if request.method == 'POST':
@@ -68,7 +65,6 @@ def period_detail(request, period_id):
     period = get_object_or_404(Period, id=period_id)
     return render(request, 'Home/period_detail.html', {'period': period})
 
-# Views for symptom-related functionalities
 @login_required
 def add_symptom(request, period_id):
     period = get_object_or_404(Period, id=period_id)
