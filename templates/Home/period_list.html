@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Period List</h2>
+  <ul>
+    {% for period in periods %}
+      <li><a href="{% url 'Home:period_detail' period.id %}">{{ period.start_date }} - {{ period.end_date }}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}
