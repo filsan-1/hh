@@ -22,6 +22,7 @@ def selfcare(request):
 class HomeView(ListView):
     template_name = 'Home/home.html'
 
+# View for handling contact form submission
 def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
