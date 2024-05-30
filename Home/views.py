@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
 from .forms import ContactForm, PeriodForm, SymptomForm
 from django.core.mail import send_mail, BadHeaderError
@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Period, Symptom
 
-# Create your views here.
+# Views for rendering templates
 def index(request):
     return render(request, 'Home/home.html')
 
@@ -39,10 +39,11 @@ def contact(request):
             except BadHeaderError:
                 return HttpResponse('Invalid header found.')
             return redirect("Home:home")
-    
-    form = ContactForm()
+    else:
+        form = ContactForm()
     return render(request, "Home/contact.html", {'form': form})
 
+# Views for period-related functionalities
 @login_required
 def add_period(request):
     if request.method == 'POST':
@@ -63,12 +64,13 @@ def period_list(request):
 
 @login_required
 def period_detail(request, period_id):
-    period = Period.objects.get(id=period_id)
+    period = get_object_or_404(Period, id=period_id)
     return render(request, 'Home/period_detail.html', {'period': period})
 
+# Views for symptom-related functionalities
 @login_required
 def add_symptom(request, period_id):
-    period = Period.objects.get(id=period_id)
+    period = get_object_or_404(Period, id=period_id)
     if request.method == 'POST':
         form = SymptomForm(request.POST)
         if form.is_valid():
