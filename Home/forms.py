@@ -16,4 +16,3 @@ class SymptomLogForm(forms.ModelForm):
     class Meta:
         model = SymptomLog
         fields = ['date', 'symptom', 'severity', 'notes']
-
