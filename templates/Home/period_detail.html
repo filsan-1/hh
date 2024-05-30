@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Period Detail</h2>
+  <p>Start Date: {{ period.start_date }}</p>
+  <p>End Date: {{ period.end_date }}</p>
+  <h3>Symptoms</h3>
+  <ul>
+    {% for symptom in period.symptoms.all %}
+      <li>{{ symptom.description }} - {{ symptom.severity }}</li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'Home:add_symptom' period.id %}">Add Symptom</a>
+{% endblock %}
