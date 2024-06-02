@@ -18,9 +18,6 @@ def pcod(request):
 def selfcare(request):
     return render(request, 'Home/selfcare.html')
 
-class HomeView(ListView):
-    template_name = 'Home/home.html'
-
 def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
