@@ -1,0 +1,296 @@
+{% extends 'Base.html' %}
+{% load static %}
+
+{% block title %}Healthy Recipes - Hormone Harmony{% endblock %}
+
+{% block body_block %}
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .recipe-header {
+        background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
+        color: white;
+        padding: 3rem 2rem;
+        text-align: center;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+    }
+    
+    .recipe-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .recipe-header p {
+        font-size: 1.1rem;
+        opacity: 0.95;
+    }
+    
+    .add-recipe-btn {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .add-recipe-btn a {
+        display: inline-block;
+        background: linear-gradient(135deg, #FF69B4, #FF1493);
+        color: white;
+        padding: 0.75rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .add-recipe-btn a:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 20, 147, 0.3);
+    }
+    
+    .recipes-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .recipe-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(255, 192, 224, 0.2);
+        transition: all 0.3s ease;
+        border: 1px solid #FFE4F5;
+    }
+    
+    .recipe-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(255, 20, 147, 0.15);
+    }
+    
+    .recipe-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        background: linear-gradient(135deg, #FFC0E0 0%, #FFE4F5 100%);
+    }
+    
+    .recipe-content {
+        padding: 1.5rem;
+    }
+    
+    .recipe-title {
+        color: #333;
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        line-height: 1.4;
+    }
+    
+    .recipe-author {
+        color: #FF1493;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .recipe-description {
+        color: #666;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .recipe-meta {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        font-size: 0.85rem;
+        color: #666;
+    }
+    
+    .recipe-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+    
+    .recipe-footer {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .recipe-view-btn {
+        flex: 1;
+        background: linear-gradient(135deg, #FF69B4, #FF1493);
+        color: white;
+        padding: 0.6rem 1rem;
+        border: none;
+        border-radius: 6px;
+        text-decoration: none;
+        text-align: center;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .recipe-view-btn:hover {
+        background: linear-gradient(135deg, #FF1493, #C71585);
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        background: linear-gradient(135deg, #FFF5FB 0%, #FFFBFD 100%);
+        border-radius: 12px;
+        border: 2px dashed #FFD7E8;
+    }
+    
+    .empty-state i {
+        font-size: 3rem;
+        color: #FF1493;
+        margin-bottom: 1rem;
+    }
+    
+    .empty-state h3 {
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+    
+    .empty-state p {
+        color: #666;
+        margin-bottom: 1.5rem;
+    }
+    
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 3rem;
+        margin-bottom: 2rem;
+    }
+    
+    .pagination a, .pagination span {
+        padding: 0.5rem 0.75rem;
+        border: 1px solid #FFD7E8;
+        border-radius: 6px;
+        color: #FF1493;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .pagination a:hover {
+        background: #FFC0E0;
+    }
+    
+    .pagination .current {
+        background: linear-gradient(135deg, #FF69B4, #FF1493);
+        color: white;
+        border-color: #FF1493;
+    }
+</style>
+
+<div class="container">
+    <div class="recipe-header">
+        <h1>🍽️ Healthy Recipes</h1>
+        <p>Delicious recipes designed to support women's health and manage PCOS symptoms</p>
+    </div>
+    
+    {% if user.is_authenticated %}
+    <div class="add-recipe-btn">
+        <a href="{% url 'App_Blog:create_recipe' %}">
+            <i class="fa fa-plus"></i> Share Your Recipe
+        </a>
+    </div>
+    {% endif %}
+    
+    {% if recipes %}
+        <div class="recipes-container">
+            {% for recipe in recipes %}
+            <div class="recipe-card">
+                {% if recipe.recipe_image %}
+                    <img src="{{ recipe.recipe_image.url }}" alt="{{ recipe.recipe_title }}" class="recipe-image">
+                {% else %}
+                    <div class="recipe-image" style="display: flex; align-items: center; justify-content: center; font-size: 3rem; color: #FF1493;">
+                        <i class="fa fa-cutlery"></i>
+                    </div>
+                {% endif %}
+                
+                <div class="recipe-content">
+                    <h3 class="recipe-title">{{ recipe.recipe_title }}</h3>
+                    <p class="recipe-author">By {{ recipe.author.first_name|default:recipe.author.username }}</p>
+                    
+                    {% if recipe.description %}
+                    <p class="recipe-description">{{ recipe.description }}</p>
+                    {% endif %}
+                    
+                    <div class="recipe-meta">
+                        <div class="recipe-meta-item">
+                            <i class="fa fa-user"></i> {{ recipe.servings }} servings
+                        </div>
+                        <div class="recipe-meta-item">
+                            <i class="fa fa-clock-o"></i> {{ recipe.prep_time }}min prep
+                        </div>
+                        <div class="recipe-meta-item">
+                            <i class="fa fa-fire"></i> {{ recipe.cook_time }}min cook
+                        </div>
+                    </div>
+                    
+                    <div class="recipe-footer">
+                        <a href="{% url 'App_Blog:recipe_detail' recipe.slug %}" class="recipe-view-btn">
+                            View Recipe
+                        </a>
+                        {% if user.is_authenticated and user == recipe.author %}
+                        <a href="{% url 'App_Blog:edit_recipe' recipe.pk %}" class="recipe-view-btn" style="background: linear-gradient(135deg, #FF8C00, #FFA500);">
+                            Edit
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% if is_paginated %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">« First</a>
+                <a href="?page={{ page_obj.previous_page_number }}">← Previous</a>
+            {% endif %}
+            
+            <span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Next →</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Last »</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    {% else %}
+        <div class="empty-state">
+            <i class="fa fa-cutlery"></i>
+            <h3>No Recipes Yet</h3>
+            <p>Be the first to share a delicious, healthy recipe with our community!</p>
+            {% if user.is_authenticated %}
+            <a href="{% url 'App_Blog:create_recipe' %}" class="recipe-view-btn" style="display: inline-block; width: auto; padding: 0.75rem 2rem;">
+                <i class="fa fa-plus"></i> Create Recipe
+            </a>
+            {% else %}
+            <a href="{% url 'App_Login:signin' %}" class="recipe-view-btn" style="display: inline-block; width: auto; padding: 0.75rem 2rem;">
+                Login to Share a Recipe
+            </a>
+            {% endif %}
+        </p>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

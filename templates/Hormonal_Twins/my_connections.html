@@ -1,0 +1,598 @@
+{% extends 'Base.html' %}
+{% load static %}
+
+{% block title %}My Connections - Hormonal Twins - Hormone Harmony{% endblock %}
+
+{% block body_block %}
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #FFF5FB;
+    }
+    
+    .page-header {
+        background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
+        color: white;
+        padding: 2.5rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    
+    .page-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .page-header p {
+        opacity: 0.95;
+        margin: 0;
+    }
+    
+    .tabs {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        border-bottom: 2px solid #FFE4F5;
+        overflow-x: auto;
+    }
+    
+    .tab {
+        padding: 1rem 1.5rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #999;
+        transition: all 0.3s ease;
+        position: relative;
+        white-space: nowrap;
+    }
+    
+    .tab.active {
+        color: #FF1493;
+    }
+    
+    .tab.active::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(135deg, #FF69B4, #FF1493);
+        border-radius: 2px;
+    }
+    
+    .connections-list {
+        display: grid;
+        gap: 1.5rem;
+    }
+    
+    .connection-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(255, 20, 147, 0.1);
+        transition: all 0.3s ease;
+        border: 1px solid #FFE4F5;
+    }
+    
+    .connection-card:hover {
+        box-shadow: 0 8px 20px rgba(255, 20, 147, 0.15);
+    }
+    
+    .connection-card-header {
+        background: linear-gradient(135deg, #FFB6D9 0%, #FFC0E0 100%);
+        padding: 1.5rem;
+    }
+    
+    .connection-header-content {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        justify-content: space-between;
+    }
+    
+    .connection-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex: 1;
+    }
+    
+    .connection-avatar {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: 700;
+        border: 3px solid white;
+        overflow: hidden;
+    }
+    
+    .connection-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .connection-details h3 {
+        margin: 0 0 0.3rem 0;
+        color: #333;
+        font-weight: 700;
+    }
+    
+    .connection-details p {
+        margin: 0;
+        color: #666;
+        font-size: 0.85rem;
+    }
+    
+    .connection-status {
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+    
+    .status-pending {
+        background: #FFF3CD;
+        color: #856404;
+    }
+    
+    .status-connected {
+        background: #D4EDDA;
+        color: #155724;
+    }
+    
+    .status-blocked {
+        background: #F8D7DA;
+        color: #721C24;
+    }
+    
+    .connection-card-content {
+        padding: 1.5rem;
+    }
+    
+    .connection-message {
+        background: #FFF5FB;
+        padding: 1rem;
+        border-radius: 8px;
+        border-left: 4px solid #FF69B4;
+        margin-bottom: 1rem;
+    }
+    
+    .message-label {
+        color: #999;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+    }
+    
+    .message-text {
+        color: #555;
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+    
+    .connection-stats {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #FFE4F5;
+    }
+    
+    .stat {
+        flex: 1;
+    }
+    
+    .stat-label {
+        color: #999;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 0.25rem;
+    }
+    
+    .stat-value {
+        color: #333;
+        font-size: 0.95rem;
+        font-weight: 600;
+    }
+    
+    .connection-actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+    
+    .action-btn {
+        padding: 0.6rem 1.2rem;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+    }
+    
+    .view-btn {
+        background: linear-gradient(135deg, #FF69B4, #FF1493);
+        color: white;
+    }
+    
+    .view-btn:hover {
+        background: linear-gradient(135deg, #FF1493, #C71585);
+    }
+    
+    .accept-btn {
+        background: #D4EDDA;
+        color: #155724;
+    }
+    
+    .accept-btn:hover {
+        background: #C3E6CB;
+    }
+    
+    .decline-btn {
+        background: #F8D7DA;
+        color: #721C24;
+    }
+    
+    .decline-btn:hover {
+        background: #F5C6CB;
+    }
+    
+    .block-btn {
+        background: #F0F0F0;
+        color: #666;
+    }
+    
+    .block-btn:hover {
+        background: #E8E8E8;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        background: linear-gradient(135deg, #FFF5FB 0%, #FFF0F7 100%);
+        border-radius: 12px;
+        border: 2px dashed #FFB6D9;
+    }
+    
+    .empty-state i {
+        font-size: 3rem;
+        color: #FF69B4;
+        margin-bottom: 1rem;
+    }
+    
+    .empty-state h3 {
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+    
+    .empty-state p {
+        color: #666;
+        margin-bottom: 1.5rem;
+    }
+</style>
+
+<div class="container">
+    <div class="page-header">
+        <h1>👯 My Connections</h1>
+        <p>Manage your hormonal twin connections</p>
+    </div>
+    
+    <div class="tabs">
+        <button class="tab active" onclick="showTab('connected')">
+            ✅ Connected ({{ connected.count }})
+        </button>
+        <button class="tab" onclick="showTab('pending-sent')">
+            ⏳ Requests Sent ({{ pending_sent.count }})
+        </button>
+        <button class="tab" onclick="showTab('pending-received')">
+            📬 Requests Received ({{ pending_received.count }})
+        </button>
+        <button class="tab" onclick="showTab('blocked')">
+            🚫 Blocked ({{ blocked.count }})
+        </button>
+    </div>
+    
+    <!-- Connected Tab -->
+    <div id="connected-section" class="tab-content">
+        {% if connected %}
+            <div class="connections-list">
+                {% for connection in connected %}
+                <div class="connection-card">
+                    <div class="connection-card-header">
+                        <div class="connection-header-content">
+                            <div class="connection-info">
+                                <div class="connection-avatar">
+                                    {% if connection.twin_user.profile_picture %}
+                                        <img src="{{ connection.twin_user.profile_picture.url }}" alt="{{ connection.twin_user.user.get_full_name }}">
+                                    {% else %}
+                                        {{ connection.twin_user.user.first_name|first|upper }}
+                                    {% endif %}
+                                </div>
+                                <div class="connection-details">
+                                    <h3>{{ connection.twin_user.user.get_full_name|default:connection.twin_user.user.username }}</h3>
+                                    <p>{{ connection.twin_user.get_primary_issue_display }}</p>
+                                </div>
+                            </div>
+                            <div class="connection-status status-connected">✓ Connected</div>
+                        </div>
+                    </div>
+                    
+                    <div class="connection-card-content">
+                        {% if connection.message %}
+                        <div class="connection-message">
+                            <div class="message-label">Connection Message:</div>
+                            <div class="message-text">{{ connection.message }}</div>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="connection-stats">
+                            <div class="stat">
+                                <div class="stat-label">Connected Since</div>
+                                <div class="stat-value">{{ connection.created_at|date:"M d, Y" }}</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-label">Status</div>
+                                <div class="stat-value">Active</div>
+                            </div>
+                        </div>
+                        
+                        <div class="connection-actions">
+                            <a href="{% url 'Hormonal_Twins:twin_detail' connection.twin_user.id %}" class="action-btn view-btn">
+                                <i class="fa fa-eye"></i> View Profile
+                            </a>
+                            <form method="POST" action="{% url 'Hormonal_Twins:block_connection' connection.id %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="action-btn block-btn" onclick="return confirm('Block this connection?');">
+                                    <i class="fa fa-ban"></i> Block
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <i class="fa fa-heart-o"></i>
+                <h3>No Connected Twins Yet</h3>
+                <p>Start connecting with other women who share your hormonal health journey!</p>
+                <a href="{% url 'Hormonal_Twins:find_matches' %}" class="action-btn view-btn" style="display: inline-block;">
+                    <i class="fa fa-search"></i> Find Matches
+                </a>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Pending Sent Tab -->
+    <div id="pending-sent-section" class="tab-content" style="display: none;">
+        {% if pending_sent %}
+            <div class="connections-list">
+                {% for connection in pending_sent %}
+                <div class="connection-card">
+                    <div class="connection-card-header">
+                        <div class="connection-header-content">
+                            <div class="connection-info">
+                                <div class="connection-avatar">
+                                    {% if connection.twin_user.profile_picture %}
+                                        <img src="{{ connection.twin_user.profile_picture.url }}" alt="{{ connection.twin_user.user.get_full_name }}">
+                                    {% else %}
+                                        {{ connection.twin_user.user.first_name|first|upper }}
+                                    {% endif %}
+                                </div>
+                                <div class="connection-details">
+                                    <h3>{{ connection.twin_user.user.get_full_name|default:connection.twin_user.user.username }}</h3>
+                                    <p>{{ connection.twin_user.get_primary_issue_display }}</p>
+                                </div>
+                            </div>
+                            <div class="connection-status status-pending">⏳ Pending</div>
+                        </div>
+                    </div>
+                    
+                    <div class="connection-card-content">
+                        {% if connection.message %}
+                        <div class="connection-message">
+                            <div class="message-label">Your Message:</div>
+                            <div class="message-text">{{ connection.message }}</div>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="connection-stats">
+                            <div class="stat">
+                                <div class="stat-label">Sent On</div>
+                                <div class="stat-value">{{ connection.created_at|date:"M d, Y" }}</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-label">Status</div>
+                                <div class="stat-value">Waiting</div>
+                            </div>
+                        </div>
+                        
+                        <div class="connection-actions">
+                            <a href="{% url 'Hormonal_Twins:twin_detail' connection.twin_user.id %}" class="action-btn view-btn">
+                                <i class="fa fa-eye"></i> View Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <i class="fa fa-paper-plane"></i>
+                <h3>No Pending Requests Sent</h3>
+                <p>You haven't sent any connection requests yet. Start connecting!</p>
+                <a href="{% url 'Hormonal_Twins:find_matches' %}" class="action-btn view-btn" style="display: inline-block;">
+                    <i class="fa fa-heart"></i> Find Matches
+                </a>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Pending Received Tab -->
+    <div id="pending-received-section" class="tab-content" style="display: none;">
+        {% if pending_received %}
+            <div class="connections-list">
+                {% for connection in pending_received %}
+                <div class="connection-card">
+                    <div class="connection-card-header">
+                        <div class="connection-header-content">
+                            <div class="connection-info">
+                                <div class="connection-avatar">
+                                    {% if connection.user.hormonal_twin_profile.profile_picture %}
+                                        <img src="{{ connection.user.hormonal_twin_profile.profile_picture.url }}" alt="{{ connection.user.get_full_name }}">
+                                    {% else %}
+                                        {{ connection.user.first_name|first|upper }}
+                                    {% endif %}
+                                </div>
+                                <div class="connection-details">
+                                    <h3>{{ connection.user.get_full_name|default:connection.user.username }}</h3>
+                                    <p>{{ connection.user.hormonal_twin_profile.get_primary_issue_display }}</p>
+                                </div>
+                            </div>
+                            <div class="connection-status status-pending">📬 New Request</div>
+                        </div>
+                    </div>
+                    
+                    <div class="connection-card-content">
+                        {% if connection.message %}
+                        <div class="connection-message">
+                            <div class="message-label">Their Message:</div>
+                            <div class="message-text">{{ connection.message }}</div>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="connection-stats">
+                            <div class="stat">
+                                <div class="stat-label">Received On</div>
+                                <div class="stat-value">{{ connection.created_at|date:"M d, Y" }}</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-label">Status</div>
+                                <div class="stat-value">Awaiting</div>
+                            </div>
+                        </div>
+                        
+                        <div class="connection-actions">
+                            <a href="{% url 'Hormonal_Twins:twin_detail' connection.user.hormonal_twin_profile.id %}" class="action-btn view-btn">
+                                <i class="fa fa-eye"></i> View Profile
+                            </a>
+                            <form method="POST" action="{% url 'Hormonal_Twins:accept_connection' connection.id %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="action-btn accept-btn">
+                                    <i class="fa fa-check"></i> Accept
+                                </button>
+                            </form>
+                            <form method="POST" action="{% url 'Hormonal_Twins:decline_connection' connection.id %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="action-btn decline-btn">
+                                    <i class="fa fa-times"></i> Decline
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <i class="fa fa-inbox"></i>
+                <h3>No Pending Requests Received</h3>
+                <p>You don't have any connection requests waiting for you right now.</p>
+                <a href="{% url 'Hormonal_Twins:twin_list' %}" class="action-btn view-btn" style="display: inline-block;">
+                    <i class="fa fa-users"></i> Browse Twins
+                </a>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Blocked Tab -->
+    <div id="blocked-section" class="tab-content" style="display: none;">
+        {% if blocked %}
+            <div class="connections-list">
+                {% for connection in blocked %}
+                <div class="connection-card">
+                    <div class="connection-card-header">
+                        <div class="connection-header-content">
+                            <div class="connection-info">
+                                <div class="connection-avatar">
+                                    {% if connection.twin_user.profile_picture %}
+                                        <img src="{{ connection.twin_user.profile_picture.url }}" alt="{{ connection.twin_user.user.get_full_name }}">
+                                    {% else %}
+                                        {{ connection.twin_user.user.first_name|first|upper }}
+                                    {% endif %}
+                                </div>
+                                <div class="connection-details">
+                                    <h3>{{ connection.twin_user.user.get_full_name|default:connection.twin_user.user.username }}</h3>
+                                    <p>{{ connection.twin_user.get_primary_issue_display }}</p>
+                                </div>
+                            </div>
+                            <div class="connection-status status-blocked">🚫 Blocked</div>
+                        </div>
+                    </div>
+                    
+                    <div class="connection-card-content">
+                        <div class="connection-stats">
+                            <div class="stat">
+                                <div class="stat-label">Blocked On</div>
+                                <div class="stat-value">{{ connection.updated_at|date:"M d, Y" }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <i class="fa fa-shield"></i>
+                <h3>No Blocked Connections</h3>
+                <p>You haven't blocked any connections.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+function showTab(tab) {
+    const sections = {
+        'connected': document.getElementById('connected-section'),
+        'pending-sent': document.getElementById('pending-sent-section'),
+        'pending-received': document.getElementById('pending-received-section'),
+        'blocked': document.getElementById('blocked-section')
+    };
+    
+    // Hide all sections
+    Object.values(sections).forEach(section => {
+        section.style.display = 'none';
+    });
+    
+    // Show selected section
+    if (sections[tab]) {
+        sections[tab].style.display = 'block';
+    }
+    
+    // Update tab styling
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,263 @@
+{% extends 'Base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Create Support Circle - Hormone Harmony{% endblock %}
+
+{% block body_block %}
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .form-container {
+        max-width: 700px;
+        margin: 3rem auto;
+    }
+    
+    .form-header {
+        background: linear-gradient(135deg, #32CD32 0%, #00B050 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 12px 12px 0 0;
+        text-align: center;
+    }
+    
+    .form-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-header p {
+        opacity: 0.95;
+        margin: 0;
+    }
+    
+    .form-wrapper {
+        background: white;
+        padding: 2.5rem;
+        border-radius: 0 0 12px 12px;
+        box-shadow: 0 4px 16px rgba(50, 205, 50, 0.15);
+    }
+    
+    .form-group {
+        margin-bottom: 2rem;
+    }
+    
+    .form-group label {
+        display: block;
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        font-size: 0.95rem;
+    }
+    
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="number"],
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 2px solid #E0E0E0;
+        border-radius: 8px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+    }
+    
+    .form-group input[type="text"]:focus,
+    .form-group input[type="email"]:focus,
+    .form-group input[type="number"]:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #32CD32;
+        box-shadow: 0 0 0 3px rgba(50, 205, 50, 0.1);
+    }
+    
+    .form-group textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+    
+    .help-text {
+        color: #999;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+    }
+    
+    .form-group input[type="checkbox"],
+    .form-group input[type="radio"] {
+        margin-right: 0.5rem;
+        cursor: pointer;
+    }
+    
+    .checkbox-label,
+    .radio-label {
+        display: flex;
+        align-items: center;
+        font-weight: normal;
+        color: #555;
+        margin-bottom: 0.5rem;
+        cursor: pointer;
+    }
+    
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2.5rem;
+    }
+    
+    .btn {
+        flex: 1;
+        padding: 0.85rem 2rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+    
+    .btn-submit {
+        background: linear-gradient(135deg, #32CD32 0%, #00B050 100%);
+        color: white;
+    }
+    
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(50, 205, 50, 0.3);
+    }
+    
+    .btn-cancel {
+        background: #F0F0F0;
+        color: #333;
+        border: 2px solid #E0E0E0;
+    }
+    
+    .btn-cancel:hover {
+        background: #E8E8E8;
+    }
+    
+    .error-message {
+        color: #FF6B6B;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+    }
+    
+    .errorlist {
+        list-style: none;
+        padding: 0;
+        margin: 0.5rem 0;
+    }
+    
+    .errorlist li {
+        color: #FF6B6B;
+        font-size: 0.85rem;
+        padding: 0.5rem;
+        background: #FFE8E8;
+        border-left: 3px solid #FF6B6B;
+        margin-bottom: 0.5rem;
+    }
+    
+    .focus-areas {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+    
+    .icon-selector {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 0.75rem;
+    }
+    
+    .icon-option {
+        padding: 0.75rem;
+        border: 2px solid #E0E0E0;
+        border-radius: 8px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1.5rem;
+    }
+    
+    .icon-option:hover {
+        border-color: #32CD32;
+        background: #F0FFF0;
+    }
+    
+    .icon-option input {
+        display: none;
+    }
+</style>
+
+<div class="form-container">
+    <div class="form-header">
+        <h1>🤝 Create Support Circle</h1>
+        <p>Build a community to support women on their hormonal health journey</p>
+    </div>
+    
+    <div class="form-wrapper">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="{{ form.name.id_for_label }}">Circle Name</label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <div class="error-message">{{ form.name.errors.0 }}</div>
+                {% endif %}
+                <div class="help-text">Give your circle a meaningful name (e.g., "PCOS Warriors", "Endo Warriors")</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.description.id_for_label }}">Description</label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <div class="error-message">{{ form.description.errors.0 }}</div>
+                {% endif %}
+                <div class="help-text">Tell people what your circle is about and what topics are discussed</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.focus_area.id_for_label }}">Focus Area</label>
+                {{ form.focus_area }}
+                {% if form.focus_area.errors %}
+                    <div class="error-message">{{ form.focus_area.errors.0 }}</div>
+                {% endif %}
+                <div class="help-text">What main health topic does this circle focus on?</div>
+            </div>
+            
+            <div class="form-group">
+                <label>Circle Type</label>
+                <label class="radio-label">
+                    <input type="radio" name="is_private" value="False" checked> 
+                    🌍 Public - Anyone can see and join this circle
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="is_private" value="True">
+                    🔒 Private - Only invited members can join
+                </label>
+                <div class="help-text">You can change this later in circle settings</div>
+            </div>
+            
+            <div class="form-actions">
+                <a href="{% url 'Support_Circle:circle_list' %}" class="btn btn-cancel">
+                    <i class="fa fa-times"></i> Cancel
+                </a>
+                <button type="submit" class="btn btn-submit">
+                    <i class="fa fa-plus"></i> Create Circle
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

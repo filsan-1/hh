@@ -1,12 +1,12 @@
 from django.shortcuts import render,HttpResponseRedirect
 from django.views.generic import CreateView, UpdateView, ListView, DetailView,TemplateView,DeleteView
-from App_Blog.models import Blog, Comment, Likes
+from App_Blog.models import Blog, Comment, Likes, Recipe
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 import uuid
-from App_Blog.forms import CommentForm
+from App_Blog.forms import CommentForm, RecipeForm
 
 # Create your views here.
 
@@ -86,6 +86,51 @@ def unliked(request,pk):
      already_liked = Likes.objects.filter(blog=blog, user=user)
      already_liked.delete()
      return HttpResponseRedirect(reverse('App_Blog:blog_details', kwargs={'slug':blog.slug}))
+
+
+# Recipe Views
+class RecipeList(ListView):
+     context_object_name = 'recipes'
+     model = Recipe
+     template_name = 'App_Blog/recipe_list.html'
+     queryset = Recipe.objects.order_by('-public_date')
+     paginate_by = 9
+
+
+class RecipeDetail(DetailView):
+     model = Recipe
+     template_name = 'App_Blog/recipe_detail.html'
+     context_object_name = 'recipe'
+     slug_field = 'slug'
+
+
+class CreateRecipe(LoginRequiredMixin, CreateView):
+     model = Recipe
+     template_name = 'App_Blog/create_recipe.html'
+     form_class = RecipeForm
+
+     def form_valid(self, form):
+          recipe_obj = form.save(commit=False)
+          recipe_obj.author = self.request.user
+          title = recipe_obj.recipe_title
+          recipe_obj.slug = title.replace(" ", "-") + "-" + str(uuid.uuid4())
+          recipe_obj.save()
+          return HttpResponseRedirect(reverse('App_Blog:recipe_list'))
+
+
+class UpdateRecipe(LoginRequiredMixin, UpdateView):
+     model = Recipe
+     form_class = RecipeForm
+     template_name = 'App_Blog/edit_recipe.html'
+
+     def get_success_url(self, **kwargs):
+          return reverse_lazy('App_Blog:recipe_detail', kwargs={'slug': self.object.slug})
+
+
+class DeleteRecipe(LoginRequiredMixin, DeleteView):
+     model = Recipe
+     template_name = 'App_Blog/recipe_confirm_delete.html'
+     success_url = reverse_lazy('App_Blog:recipe_list')
 
 
 

@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'django_filters',
     'App_Login',
     'App_Blog',
+    'App_Messaging',
+    'Hormonal_Twins',
+    'Support_Circle',
     'crispy_forms',
     'django_cleanup.apps.CleanupConfig',
    

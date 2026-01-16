@@ -28,6 +28,9 @@ urlpatterns = [
     path('',views.index, name='index'),
     path('account/',include('App_Login.urls')),
     path('blog/',include('App_Blog.urls')),
+    path('', include('App_Messaging.urls')),
+    path('twins/', include('Hormonal_Twins.urls')),
+    path('circles/', include('Support_Circle.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

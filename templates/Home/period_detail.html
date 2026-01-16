@@ -1,14 +1,112 @@
-{% extends 'base.html' %}
+{% extends 'Base.html' %}
 
-{% block content %}
-  <h2>Period Detail</h2>
-  <p>Start Date: {{ period.start_date }}</p>
-  <p>End Date: {{ period.end_date }}</p>
-  <h3>Symptoms</h3>
-  <ul>
-    {% for symptom in period.symptoms.all %}
-      <li>{{ symptom.description }} - {{ symptom.severity }}</li>
-    {% endfor %}
-  </ul>
-  <a href="{% url 'Home:add_symptom' period.id %}">Add Symptom</a>
+{% block title %}Period Detail - Hormone Harmony{% endblock title %}
+
+{% block body_block %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-10 offset-lg-1">
+            <!-- Header -->
+            <div style="background: linear-gradient(135deg, #FFC0E0 0%, #FFE4F5 100%); padding: 2rem; border-radius: 15px; margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h2 style="margin: 0; color: #333; font-weight: 700;">📅 Period Details</h2>
+                        <p style="margin: 0.5rem 0 0 0; color: #666;">Manage your period information and symptoms</p>
+                    </div>
+                    <a href="{% url 'Home:period_list' %}" class="btn btn-outline-secondary">← Back</a>
+                </div>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Period Information Card -->
+            <div class="card" style="border: none; border-radius: 12px; box-shadow: 0 2px 8px rgba(255, 192, 224, 0.3); margin-bottom: 2rem; background: linear-gradient(135deg, #FFF5FB 0%, #FFFBFD 100%);">
+                <div class="card-body">
+                    <h4 style="color: #FF1493; font-weight: 700; margin-bottom: 1.5rem;">Period Information</h4>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div style="background: white; padding: 1rem; border-radius: 8px; text-align: center;">
+                                <p style="color: #999; margin: 0; font-size: 0.85rem; text-transform: uppercase;">Start Date</p>
+                                <p style="color: #FF1493; font-weight: 700; font-size: 1.25rem; margin: 0.5rem 0 0 0;">
+                                    {{ period.start_date|date:"M d" }}
+                                </p>
+                                <p style="color: #999; margin: 0; font-size: 0.75rem;">{{ period.start_date|date:"Y" }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div style="background: white; padding: 1rem; border-radius: 8px; text-align: center;">
+                                <p style="color: #999; margin: 0; font-size: 0.85rem; text-transform: uppercase;">End Date</p>
+                                <p style="color: #FF1493; font-weight: 700; font-size: 1.25rem; margin: 0.5rem 0 0 0;">
+                                    {{ period.end_date|date:"M d" }}
+                                </p>
+                                <p style="color: #999; margin: 0; font-size: 0.75rem;">{{ period.end_date|date:"Y" }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div style="background: white; padding: 1rem; border-radius: 8px; text-align: center;">
+                                <p style="color: #999; margin: 0; font-size: 0.85rem; text-transform: uppercase;">Cycle Length</p>
+                                <p style="color: #FF1493; font-weight: 700; font-size: 1.25rem; margin: 0.5rem 0 0 0;">
+                                    {{ period.cycle_length }}
+                                </p>
+                                <p style="color: #999; margin: 0; font-size: 0.75rem;">days</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Symptoms Section -->
+            <div class="card" style="border: none; border-radius: 12px; box-shadow: 0 2px 8px rgba(255, 192, 224, 0.3); background: linear-gradient(135deg, #FFF5FB 0%, #FFFBFD 100%);">
+                <div class="card-body">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h4 style="color: #FF1493; font-weight: 700; margin: 0;">💊 Symptoms & Notes</h4>
+                        <a href="{% url 'Home:add_symptom' period.id %}" class="btn btn-sm" style="background: linear-gradient(135deg, #FF69B4, #FF1493); color: white; border: none; font-weight: 600;">
+                            <i class="fa fa-plus"></i> Add Symptom
+                        </a>
+                    </div>
+
+                    {% if period.symptom_set.all %}
+                        <div class="row">
+                            {% for symptom in period.symptom_set.all %}
+                                <div class="col-md-6 mb-3">
+                                    <div style="background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid #FF69B4;">
+                                        <h6 style="color: #333; font-weight: 700; margin-bottom: 0.5rem;">{{ symptom.symptom }}</h6>
+                                        <p style="color: #666; margin: 0.25rem 0; font-size: 0.9rem;">
+                                            <strong>Date:</strong> {{ symptom.date|date:"M d, Y" }}
+                                        </p>
+                                        <p style="color: #666; margin: 0.25rem 0; font-size: 0.9rem;">
+                                            <strong>Severity:</strong>
+                                            <span class="badge" style="background: {% if symptom.severity >= 7 %}#FF1493{% elif symptom.severity >= 4 %}#FF69B4{% else %}#FFB6D9{% endif %}; color: white;">
+                                                {{ symptom.severity }}/10
+                                            </span>
+                                        </p>
+                                        {% if symptom.notes %}
+                                        <p style="color: #999; margin: 0.5rem 0 0 0; font-size: 0.85rem; font-style: italic;">
+                                            <strong>Notes:</strong> {{ symptom.notes }}
+                                        </p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div style="text-align: center; padding: 2rem 1rem; background: white; border-radius: 8px;">
+                            <p style="color: #999; margin: 0; font-size: 0.95rem;">No symptoms recorded yet</p>
+                            <a href="{% url 'Home:add_symptom' period.id %}" style="color: #FF69B4; text-decoration: none; font-weight: 600;">
+                                Add your first symptom →
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

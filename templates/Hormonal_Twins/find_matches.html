@@ -1,0 +1,442 @@
+{% extends 'Base.html' %}
+{% load static %}
+
+{% block title %}Find Matches - Hormonal Twins - Hormone Harmony{% endblock %}
+
+{% block body_block %}
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #FFF5FB;
+    }
+    
+    .page-header {
+        background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
+        color: white;
+        padding: 2.5rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    
+    .page-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .page-header p {
+        opacity: 0.95;
+    }
+    
+    .filter-section {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 8px rgba(255, 20, 147, 0.1);
+    }
+    
+    .filter-title {
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 1.5rem;
+    }
+    
+    .filter-group {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .filter-group label {
+        display: block;
+        color: #666;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .filter-group select,
+    .filter-group input {
+        width: 100%;
+        padding: 0.7rem;
+        border: 2px solid #E0E0E0;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+    
+    .filter-group select:focus,
+    .filter-group input:focus {
+        outline: none;
+        border-color: #FF69B4;
+        box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+    }
+    
+    .filter-buttons {
+        display: flex;
+        gap: 1rem;
+    }
+    
+    .filter-btn {
+        padding: 0.7rem 1.5rem;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-apply {
+        background: linear-gradient(135deg, #FF69B4, #FF1493);
+        color: white;
+    }
+    
+    .btn-apply:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 20, 147, 0.3);
+    }
+    
+    .btn-reset {
+        background: #F0F0F0;
+        color: #333;
+        border: 2px solid #E0E0E0;
+    }
+    
+    .btn-reset:hover {
+        background: #E8E8E8;
+    }
+    
+    .results-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+    
+    .results-count {
+        color: #333;
+        font-weight: 700;
+        font-size: 1.1rem;
+    }
+    
+    .sort-group {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+    }
+    
+    .sort-group label {
+        color: #666;
+        font-weight: 600;
+        margin: 0;
+    }
+    
+    .sort-group select {
+        padding: 0.6rem;
+        border: 2px solid #E0E0E0;
+        border-radius: 6px;
+        font-size: 0.9rem;
+    }
+    
+    .twins-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .twin-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(255, 20, 147, 0.1);
+        transition: all 0.3s ease;
+        border: 1px solid #FFE4F5;
+    }
+    
+    .twin-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(255, 20, 147, 0.2);
+    }
+    
+    .twin-card-header {
+        background: linear-gradient(135deg, #FFB6D9 0%, #FFC0E0 100%);
+        padding: 2rem 1.5rem;
+        text-align: center;
+    }
+    
+    .twin-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-size: 2rem;
+        font-weight: 700;
+        border: 3px solid white;
+        overflow: hidden;
+    }
+    
+    .twin-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .twin-name {
+        color: #333;
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.3rem;
+    }
+    
+    .twin-username {
+        color: #999;
+        font-size: 0.85rem;
+    }
+    
+    .twin-card-content {
+        padding: 1.5rem;
+    }
+    
+    .issue-badge {
+        background: linear-gradient(135deg, #FF69B4, #FF1493);
+        color: white;
+        display: inline-block;
+        padding: 0.4rem 0.8rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .bio-snippet {
+        color: #666;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+        min-height: 45px;
+    }
+    
+    .twin-stats {
+        display: flex;
+        justify-content: space-around;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #FFE4F5;
+        margin-bottom: 1rem;
+    }
+    
+    .stat {
+        text-align: center;
+    }
+    
+    .stat-number {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #FF1493;
+    }
+    
+    .stat-label {
+        font-size: 0.75rem;
+        color: #999;
+    }
+    
+    .twin-actions {
+        display: flex;
+        gap: 0.75rem;
+    }
+    
+    .action-btn {
+        flex: 1;
+        padding: 0.6rem;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+    
+    .view-btn {
+        background: linear-gradient(135deg, #FF69B4, #FF1493);
+        color: white;
+    }
+    
+    .view-btn:hover {
+        background: linear-gradient(135deg, #FF1493, #C71585);
+    }
+    
+    .connect-btn {
+        background: #FFF5FB;
+        color: #FF1493;
+        border: 2px solid #FFE4F5;
+    }
+    
+    .connect-btn:hover {
+        background: #FFE4F5;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        background: linear-gradient(135deg, #FFF5FB 0%, #FFF0F7 100%);
+        border-radius: 12px;
+        border: 2px dashed #FFB6D9;
+    }
+    
+    .empty-state i {
+        font-size: 3rem;
+        color: #FF69B4;
+        margin-bottom: 1rem;
+    }
+    
+    .empty-state h3 {
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+    
+    .empty-state p {
+        color: #666;
+    }
+    
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 2rem;
+    }
+    
+    .pagination a,
+    .pagination span {
+        padding: 0.6rem 0.9rem;
+        border: 2px solid #E0E0E0;
+        border-radius: 6px;
+        text-decoration: none;
+        color: #333;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .pagination a:hover {
+        border-color: #FF69B4;
+        color: #FF69B4;
+    }
+    
+    .pagination .current {
+        background: linear-gradient(135deg, #FF69B4, #FF1493);
+        color: white;
+        border-color: #FF1493;
+    }
+</style>
+
+<div class="container">
+    <div class="page-header">
+        <h1>👯 Find Your Hormonal Twin</h1>
+        <p>Connect with women who understand your hormonal health journey</p>
+    </div>
+    
+    <div class="filter-section">
+        <div class="filter-title">🔍 Filter Matches</div>
+        <form method="GET" class="filter-form">
+            <div class="filter-group">
+                <div>
+                    <label>Hormonal Issue</label>
+                    <select name="issue" id="issue-filter">
+                        <option value="">All Issues</option>
+                        <option value="pcos" {% if request.GET.issue == 'pcos' %}selected{% endif %}>PCOS</option>
+                        <option value="endo" {% if request.GET.issue == 'endo' %}selected{% endif %}>Endometriosis</option>
+                        <option value="thyroid" {% if request.GET.issue == 'thyroid' %}selected{% endif %}>Thyroid Issues</option>
+                        <option value="irregular" {% if request.GET.issue == 'irregular' %}selected{% endif %}>Irregular Cycles</option>
+                        <option value="heavy" {% if request.GET.issue == 'heavy' %}selected{% endif %}>Heavy Bleeding</option>
+                        <option value="acne" {% if request.GET.issue == 'acne' %}selected{% endif %}>Hormonal Acne</option>
+                        <option value="estrogen" {% if request.GET.issue == 'estrogen' %}selected{% endif %}>Low Estrogen</option>
+                        <option value="testosterone" {% if request.GET.issue == 'testosterone' %}selected{% endif %}>High Testosterone</option>
+                        <option value="pms" {% if request.GET.issue == 'pms' %}selected{% endif %}>PMS</option>
+                        <option value="pmdd" {% if request.GET.issue == 'pmdd' %}selected{% endif %}>PMDD</option>
+                        <option value="perimenopause" {% if request.GET.issue == 'perimenopause' %}selected{% endif %}>Perimenopause</option>
+                        <option value="other" {% if request.GET.issue == 'other' %}selected{% endif %}>Other</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="filter-buttons">
+                <button type="submit" class="filter-btn btn-apply">
+                    <i class="fa fa-search"></i> Apply Filters
+                </button>
+                <a href="{% url 'Hormonal_Twins:find_matches' %}" class="filter-btn btn-reset">
+                    <i class="fa fa-refresh"></i> Reset
+                </a>
+            </div>
+        </form>
+    </div>
+    
+    {% if matches %}
+        <div class="results-header">
+            <div class="results-count">Found {{ matches.count }} matching twin{{ matches.count|pluralize }}</div>
+        </div>
+        
+        <div class="twins-grid">
+            {% for twin in matches %}
+            <div class="twin-card">
+                <div class="twin-card-header">
+                    <div class="twin-avatar">
+                        {% if twin.profile_picture %}
+                            <img src="{{ twin.profile_picture.url }}" alt="{{ twin.user.get_full_name }}">
+                        {% else %}
+                            {{ twin.user.first_name|first|upper }}
+                        {% endif %}
+                    </div>
+                    <div class="twin-name">{{ twin.user.get_full_name|default:twin.user.username }}</div>
+                    <div class="twin-username">@{{ twin.user.username }}</div>
+                </div>
+                
+                <div class="twin-card-content">
+                    <div class="issue-badge">💫 {{ twin.get_primary_issue_display }}</div>
+                    
+                    <p class="bio-snippet">{{ twin.bio|default:"No bio yet"|truncatewords:15 }}</p>
+                    
+                    <div class="twin-stats">
+                        <div class="stat">
+                            <div class="stat-number">{{ twin.connections.count }}</div>
+                            <div class="stat-label">Connections</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">{{ twin.created_at|timesince|truncatewords:1 }}</div>
+                            <div class="stat-label">Member</div>
+                        </div>
+                    </div>
+                    
+                    <div class="twin-actions">
+                        <a href="{% url 'Hormonal_Twins:twin_detail' twin.id %}" class="action-btn view-btn">
+                            View Profile
+                        </a>
+                        <form method="POST" action="{% url 'Hormonal_Twins:connect_twin' twin.id %}" style="flex: 1;">
+                            {% csrf_token %}
+                            <button type="submit" class="action-btn connect-btn" style="width: 100%;">
+                                <i class="fa fa-heart"></i> Connect
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="fa fa-search"></i>
+            <h3>No Matches Found</h3>
+            <p>Try adjusting your filters or check back later!</p>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

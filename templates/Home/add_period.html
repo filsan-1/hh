@@ -1,10 +1,40 @@
-{% extends 'base.html' %}
+{% extends 'Base.html' %}
+{% load crispy_forms_tags %}
 
-{% block content %}
-  <h2>Add Period</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
-  </form>
+{% block title %}Add Period - Hormone Harmony{% endblock title %}
+
+{% block body_block %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3">
+            <div class="form" style="background: linear-gradient(135deg, #FFF5FB 0%, #FFFBFD 100%); border: 1px solid #FFD7E8;">
+                <h2 style="color: #FF1493; font-weight: 700; margin-bottom: 2rem; text-align: center;">
+                    <i class="fa fa-calendar-plus-o"></i> Add Period Record
+                </h2>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="post" novalidate>
+                    {{ form|crispy }}
+                    {% csrf_token %}
+                    <button type="submit" class="btn" style="width: 100%; background: linear-gradient(135deg, #FF69B4, #FF1493); color: white; border: none; font-weight: 600; padding: 0.75rem; border-radius: 8px; margin-top: 1rem;">
+                        <i class="fa fa-save"></i> Save Period
+                    </button>
+                </form>
+
+                <hr style="margin: 2rem 0; border-color: #FFD7E8;">
+                <a href="{% url 'Home:period_list' %}" class="btn btn-outline-secondary" style="width: 100%;">
+                    <i class="fa fa-arrow-left"></i> Back to Periods
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

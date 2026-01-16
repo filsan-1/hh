@@ -1,0 +1,272 @@
+{% extends 'Base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Create Post - {{ circle.name }} - Hormone Harmony{% endblock %}
+
+{% block body_block %}
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .form-container {
+        max-width: 800px;
+        margin: 2rem auto;
+    }
+    
+    .breadcrumb {
+        margin-bottom: 2rem;
+    }
+    
+    .breadcrumb a {
+        color: #00B050;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    
+    .breadcrumb a:hover {
+        color: #32CD32;
+    }
+    
+    .form-header {
+        background: linear-gradient(135deg, #32CD32 0%, #00B050 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 12px 12px 0 0;
+        text-align: center;
+    }
+    
+    .form-header h1 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .circle-context {
+        font-size: 0.95rem;
+        opacity: 0.95;
+    }
+    
+    .form-wrapper {
+        background: white;
+        padding: 2.5rem;
+        border-radius: 0 0 12px 12px;
+        box-shadow: 0 4px 16px rgba(50, 205, 50, 0.15);
+    }
+    
+    .form-group {
+        margin-bottom: 2rem;
+    }
+    
+    .form-group label {
+        display: block;
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        font-size: 0.95rem;
+    }
+    
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="number"],
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.85rem 1rem;
+        border: 2px solid #E0E0E0;
+        border-radius: 8px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+    }
+    
+    .form-group input[type="text"]:focus,
+    .form-group input[type="email"]:focus,
+    .form-group input[type="number"]:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #32CD32;
+        box-shadow: 0 0 0 3px rgba(50, 205, 50, 0.1);
+    }
+    
+    .form-group textarea {
+        resize: vertical;
+        min-height: 250px;
+        line-height: 1.6;
+    }
+    
+    .help-text {
+        color: #999;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+    }
+    
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2.5rem;
+    }
+    
+    .btn {
+        padding: 0.85rem 2rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+    
+    .btn-submit {
+        flex: 1;
+        background: linear-gradient(135deg, #32CD32 0%, #00B050 100%);
+        color: white;
+    }
+    
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(50, 205, 50, 0.3);
+    }
+    
+    .btn-cancel {
+        flex: 1;
+        background: #F0F0F0;
+        color: #333;
+        border: 2px solid #E0E0E0;
+    }
+    
+    .btn-cancel:hover {
+        background: #E8E8E8;
+    }
+    
+    .error-message {
+        color: #FF6B6B;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+    }
+    
+    .errorlist {
+        list-style: none;
+        padding: 0;
+        margin: 0.5rem 0;
+    }
+    
+    .errorlist li {
+        color: #FF6B6B;
+        font-size: 0.85rem;
+        padding: 0.5rem;
+        background: #FFE8E8;
+        border-left: 3px solid #FF6B6B;
+        margin-bottom: 0.5rem;
+    }
+    
+    .character-count {
+        color: #999;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+    }
+    
+    .formatting-tips {
+        background: #F0FFF0;
+        border-left: 4px solid #32CD32;
+        padding: 1rem;
+        border-radius: 6px;
+        margin-bottom: 2rem;
+    }
+    
+    .formatting-tips strong {
+        color: #333;
+    }
+    
+    .formatting-tips ul {
+        margin: 0.5rem 0 0 1.5rem;
+        padding: 0;
+    }
+    
+    .formatting-tips li {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+    }
+</style>
+
+<div class="form-container">
+    <div class="breadcrumb">
+        <a href="{% url 'Support_Circle:circle_list' %}">← Back to Circles</a>
+        <span> / </span>
+        <a href="{% url 'Support_Circle:circle_detail' circle.id %}">{{ circle.name }}</a>
+    </div>
+    
+    <div class="form-header">
+        <h1>✍️ Create New Post</h1>
+        <div class="circle-context">
+            Posting in <strong>{{ circle.name }}</strong> • {{ circle.get_focus_area_display }}
+        </div>
+    </div>
+    
+    <div class="form-wrapper">
+        <div class="formatting-tips">
+            <strong>💡 Tips for a great post:</strong>
+            <ul>
+                <li>Share your personal experience or ask a genuine question</li>
+                <li>Be respectful and supportive of other members</li>
+                <li>Include relevant details to help others understand your situation</li>
+                <li>Keep the tone positive and constructive</li>
+            </ul>
+        </div>
+        
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="{{ form.title.id_for_label }}">Post Title</label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <div class="error-message">{{ form.title.errors.0 }}</div>
+                {% endif %}
+                <div class="help-text">Give your post a clear, descriptive title (e.g., "Tips for managing PCOS energy levels")</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.content.id_for_label }}">Your Message</label>
+                {{ form.content }}
+                {% if form.content.errors %}
+                    <div class="error-message">{{ form.content.errors.0 }}</div>
+                {% endif %}
+                <div class="character-count">
+                    <span id="char-count">0</span> characters
+                </div>
+                <div class="help-text">Share your story, ask questions, or offer advice to the community</div>
+            </div>
+            
+            <div class="form-actions">
+                <a href="{% url 'Support_Circle:circle_detail' circle.id %}" class="btn btn-cancel">
+                    <i class="fa fa-times"></i> Cancel
+                </a>
+                <button type="submit" class="btn btn-submit">
+                    <i class="fa fa-send"></i> Post to Circle
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Character count
+const contentInput = document.querySelector('textarea[name="content"]');
+const charCount = document.getElementById('char-count');
+
+if (contentInput) {
+    contentInput.addEventListener('input', function() {
+        charCount.textContent = this.value.length;
+    });
+}
+</script>
+
+{% endblock %}

@@ -1,27 +1,45 @@
 {% extends 'Base.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %} Create New Account{% endblock title %}
-
+{% block title %}Sign Up - Hormone Harmony{% endblock title %}
 
 {% block body_block %}
-
-{% if registered %}
-<div class="alert alert-success">
-    Account created successfully <a href="{%  url 'App_Login:signin' %}"> Login Here</a>
-</div>
-{% else %}
-<div class="enter">
-<h1>Create New Account</h1>
-<form method="post">
-    
-   {{ form | crispy }} 
-   {% csrf_token %}
-   <button type="submit" style="width: 12rem;" class="custom-btn btn-2">Create Account</button>
-
-</form>
-<br>
-<p>Already Have an account? <a href="{% url 'App_Login:signin' %}"><button type="submit" class="custom-btn btn-2">Login Here</button></a></p>
-{% endif %}
+<div class="mainbasecontainer" style="min-height: 70vh; display: flex; align-items: center; justify-content: center;">
+    {% if registered %}
+        <div class="alert alert-success" style="max-width: 400px; text-align: center;">
+            <h4>Account Created Successfully!</h4>
+            <p>Your account has been created. You can now log in.</p>
+            <a href="{% url 'App_Login:signin' %}" class="custom-btn btn-2" style="text-decoration: none; display: inline-block; margin-top: 1rem;">
+                Login Here
+            </a>
+        </div>
+    {% else %}
+        <div class="form" style="width: 100%; max-width: 450px; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: #333;">Create New Account</h2>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            <form method="post" novalidate>
+                {{ form|crispy }}
+                {% csrf_token %}
+                <button type="submit" class="custom-btn btn-2" style="width: 100%; margin-top: 1rem;">Create Account</button>
+            </form>
+            
+            <hr style="margin: 2rem 0;">
+            <p style="text-align: center; margin: 0;">
+                Already have an account? 
+                <a href="{% url 'App_Login:signin' %}" style="color: #007bff; text-decoration: none; font-weight: 600;">
+                    Login Here
+                </a>
+            </p>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}

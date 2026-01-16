@@ -1,0 +1,172 @@
+{% extends 'Base.html' %}
+{% load static %}
+
+{% block title %}Create Twin Profile - Hormone Harmony{% endblock %}
+
+{% block body_block %}
+
+<style>
+    .profile-form-container {
+        max-width: 600px;
+        margin: 2rem auto;
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 2px 10px rgba(255, 192, 224, 0.15);
+        border: 1px solid #FFE4F5;
+    }
+    
+    .form-header {
+        background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
+        color: white;
+        padding: 2rem;
+        margin: -2rem -2rem 2rem -2rem;
+        border-radius: 15px 15px 0 0;
+        text-align: center;
+    }
+    
+    .form-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0;
+    }
+    
+    .form-header p {
+        opacity: 0.95;
+        margin: 0.5rem 0 0 0;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #333;
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #FFD7E8;
+        border-radius: 8px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: #FF1493;
+        box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.1);
+    }
+    
+    .form-group textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+    
+    .form-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    
+    .form-buttons button,
+    .form-buttons a {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .submit-btn {
+        background: linear-gradient(135deg, #FF69B4, #FF1493);
+        color: white;
+    }
+    
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 20, 147, 0.3);
+    }
+    
+    .cancel-btn {
+        background: #F0F0F0;
+        color: #666;
+    }
+    
+    .cancel-btn:hover {
+        background: #E0E0E0;
+    }
+    
+    .info-box {
+        background: linear-gradient(135deg, #FFF5FB 0%, #FFFBFD 100%);
+        border-left: 4px solid #FF1493;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        color: #555;
+    }
+    
+    .info-box strong {
+        color: #333;
+    }
+</style>
+
+<div class="profile-form-container">
+    <div class="form-header">
+        <h1>👯 Create Your Hormonal Twin Profile</h1>
+        <p>Share your journey and connect with similar experiences</p>
+    </div>
+    
+    <div class="info-box">
+        <strong>💡 Tip:</strong> Your profile helps us match you with other women facing similar hormonal challenges. Be authentic and share what you're comfortable with!
+    </div>
+    
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="id_primary_issue">Primary Hormonal Issue *</label>
+            {{ form.primary_issue }}
+        </div>
+        
+        <div class="form-group">
+            <label for="id_secondary_issues">Other Issues (comma-separated)</label>
+            {{ form.secondary_issues }}
+        </div>
+        
+        <div class="form-group">
+            <label for="id_bio">Your Story</label>
+            {{ form.bio }}
+        </div>
+        
+        <div class="form-group">
+            <label for="id_profile_picture">Profile Picture</label>
+            {{ form.profile_picture }}
+        </div>
+        
+        <div class="form-buttons">
+            <button type="submit" class="submit-btn">
+                <i class="fa fa-save"></i> Save Profile
+            </button>
+            <a href="{% url 'Hormonal_Twins:twin_list' %}" class="cancel-btn">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,290 @@
+{% extends 'Base.html' %}
+{% load static %}
+
+{% block title %}Support Circles - Connect & Share - Hormone Harmony{% endblock %}
+
+{% block body_block %}
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .circles-hero {
+        background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
+        color: white;
+        padding: 3rem 2rem;
+        text-align: center;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        box-shadow: 0 8px 24px rgba(255, 20, 147, 0.15);
+    }
+    
+    .circles-hero h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    .circles-hero p {
+        font-size: 1.1rem;
+        opacity: 0.95;
+        margin: 0.5rem 0;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+    }
+    
+    .action-btn {
+        background: white;
+        color: #FF1493;
+        padding: 0.85rem 2rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 700;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(255, 20, 147, 0.3);
+    }
+    
+    .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .circles-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+    
+    .circle-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(50, 205, 50, 0.15);
+        transition: all 0.3s ease;
+        border: 1px solid #D0F0C0;
+    }
+    
+    .circle-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(50, 205, 50, 0.2);
+    }
+    
+    .circle-header {
+        background: linear-gradient(135deg, #90EE90 0%, #98FB98 100%);
+        padding: 2rem 1.5rem;
+        text-align: center;
+    }
+    
+    .circle-icon {
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .circle-name {
+        color: #333;
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .circle-focus {
+        background: linear-gradient(135deg, #32CD32, #00B050);
+        color: white;
+        display: inline-block;
+        padding: 0.25rem 1rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+    
+    .circle-content {
+        padding: 1.5rem;
+    }
+    
+    .circle-description {
+        color: #666;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        min-height: 60px;
+    }
+    
+    .circle-stats {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #E0E0E0;
+    }
+    
+    .stat {
+        text-align: center;
+    }
+    
+    .stat-number {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #00B050;
+    }
+    
+    .stat-label {
+        font-size: 0.8rem;
+        color: #999;
+    }
+    
+    .circle-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .circle-action-btn {
+        flex: 1;
+        padding: 0.6rem;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+    
+    .view-btn {
+        background: linear-gradient(135deg, #32CD32, #00B050);
+        color: white;
+    }
+    
+    .view-btn:hover {
+        background: linear-gradient(135deg, #00B050, #228B22);
+    }
+    
+    .join-btn {
+        background: #F0F0F0;
+        color: #00B050;
+    }
+    
+    .join-btn:hover {
+        background: #D0F0C0;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        background: linear-gradient(135deg, #F0FFF0 0%, #F5FFFA 100%);
+        border-radius: 12px;
+        border: 2px dashed #90EE90;
+    }
+    
+    .empty-state i {
+        font-size: 3rem;
+        color: #32CD32;
+        margin-bottom: 1rem;
+    }
+    
+    .empty-state h3 {
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+    
+    .empty-state p {
+        color: #666;
+        margin-bottom: 1.5rem;
+    }
+</style>
+
+<div class="container">
+    <div class="circles-hero">
+        <h1>🤝 Support Circles</h1>
+        <p>Join communities dedicated to supporting women with hormonal health challenges</p>
+        <div class="action-buttons">
+            {% if user.is_authenticated %}
+                <a href="{% url 'Support_Circle:my_circles' %}" class="action-btn">
+                    👥 My Circles
+                </a>
+                <a href="{% url 'Support_Circle:create_circle' %}" class="action-btn">
+                    ✨ Create Circle
+                </a>
+            {% else %}
+                <a href="{% url 'App_Login:signin' %}" class="action-btn">
+                    🔐 Login
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    
+    {% if circles %}
+        <h2 style="color: #333; font-weight: 700; margin-bottom: 2rem; font-size: 1.8rem;">
+            🌱 Active Support Circles
+        </h2>
+        <div class="circles-grid">
+            {% for circle in circles %}
+            <div class="circle-card">
+                <div class="circle-header">
+                    <div class="circle-icon">{{ circle.icon }}</div>
+                    <div class="circle-name">{{ circle.name }}</div>
+                    <div class="circle-focus">{{ circle.get_focus_area_display }}</div>
+                </div>
+                
+                <div class="circle-content">
+                    <p class="circle-description">{{ circle.description|truncatewords:20 }}</p>
+                    
+                    <div class="circle-stats">
+                        <div class="stat">
+                            <div class="stat-number">{{ circle.members.count }}</div>
+                            <div class="stat-label">Members</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">{{ circle.posts.count }}</div>
+                            <div class="stat-label">Posts</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">{{ circle.created_at|date:"M d" }}</div>
+                            <div class="stat-label">Created</div>
+                        </div>
+                    </div>
+                    
+                    <div class="circle-actions">
+                        <a href="{% url 'Support_Circle:circle_detail' circle.id %}" class="circle-action-btn view-btn">
+                            👀 View Circle
+                        </a>
+                        {% if user.is_authenticated and user not in circle.members.all %}
+                        <a href="{% url 'Support_Circle:join_circle' circle.id %}" class="circle-action-btn join-btn">
+                            ➕ Join
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="fa fa-comments"></i>
+            <h3>No Support Circles Yet</h3>
+            <p>Be the first to create a support circle for your community!</p>
+            {% if user.is_authenticated %}
+            <a href="{% url 'Support_Circle:create_circle' %}" class="action-btn">
+                💫 Create a Circle
+            </a>
+            {% else %}
+            <a href="{% url 'App_Login:signup' %}" class="action-btn">
+                ✨ Sign Up to Join
+            </a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

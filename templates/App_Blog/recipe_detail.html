@@ -1,0 +1,332 @@
+{% extends 'Base.html' %}
+{% load static %}
+
+{% block title %}{{ recipe.recipe_title }} - Hormone Harmony{% endblock %}
+
+{% block body_block %}
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .recipe-detail-header {
+        background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+    }
+    
+    .recipe-detail-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .recipe-detail-header p {
+        font-size: 1rem;
+        opacity: 0.95;
+    }
+    
+    .recipe-detail-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    @media (max-width: 768px) {
+        .recipe-detail-container {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    .recipe-image-container {
+        border-radius: 12px;
+        overflow: hidden;
+        background: linear-gradient(135deg, #FFC0E0 0%, #FFE4F5 100%);
+        height: 400px;
+    }
+    
+    .recipe-image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .recipe-info {
+        background: linear-gradient(135deg, #FFF5FB 0%, #FFFBFD 100%);
+        padding: 2rem;
+        border-radius: 12px;
+        border: 2px solid #FFD7E8;
+    }
+    
+    .recipe-meta-section {
+        margin-bottom: 2rem;
+    }
+    
+    .recipe-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        color: #333;
+    }
+    
+    .recipe-meta-item i {
+        color: #FF1493;
+        min-width: 25px;
+    }
+    
+    .recipe-meta-label {
+        font-weight: 700;
+        color: #333;
+    }
+    
+    .recipe-meta-value {
+        color: #666;
+    }
+    
+    .recipe-author {
+        background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
+        color: white;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .recipe-author strong {
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+    }
+    
+    .action-btn {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+    
+    .edit-btn {
+        background: linear-gradient(135deg, #FF8C00, #FFA500);
+        color: white;
+    }
+    
+    .edit-btn:hover {
+        background: linear-gradient(135deg, #FFA500, #FFB347);
+    }
+    
+    .delete-btn {
+        background: linear-gradient(135deg, #FF6B6B, #DC143C);
+        color: white;
+    }
+    
+    .delete-btn:hover {
+        background: linear-gradient(135deg, #DC143C, #C41E3A);
+    }
+    
+    .back-btn {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #FF69B4, #FF1493);
+        color: white;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        margin-bottom: 2rem;
+        transition: all 0.3s ease;
+    }
+    
+    .back-btn:hover {
+        transform: translateX(-3px);
+    }
+    
+    .section {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        border: 1px solid #FFE4F5;
+    }
+    
+    .section h2 {
+        color: #333;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #FFC0E0;
+    }
+    
+    .section p {
+        color: #555;
+        line-height: 1.8;
+        white-space: pre-wrap;
+    }
+    
+    .ingredients-list {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .ingredients-list li {
+        padding: 0.75rem;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, #FFF5FB 0%, #FFFBFD 100%);
+        border-left: 4px solid #FF1493;
+        border-radius: 4px;
+        color: #555;
+    }
+    
+    .instructions-list {
+        list-style: none;
+        padding: 0;
+        counter-reset: step-counter;
+    }
+    
+    .instructions-list li {
+        counter-increment: step-counter;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #FFF5FB 0%, #FFFBFD 100%);
+        border-radius: 8px;
+        position: relative;
+        padding-left: 3.5rem;
+        color: #555;
+    }
+    
+    .instructions-list li:before {
+        content: counter(step-counter);
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: linear-gradient(135deg, #FF69B4, #FF1493);
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+    }
+</style>
+
+<div class="container">
+    <a href="{% url 'App_Blog:recipe_list' %}" class="back-btn">
+        <i class="fa fa-arrow-left"></i> Back to Recipes
+    </a>
+    
+    <div class="recipe-detail-header">
+        <h1>{{ recipe.recipe_title }}</h1>
+        <p>A delicious recipe to support women's health</p>
+    </div>
+    
+    <div class="recipe-detail-container">
+        <div class="recipe-image-container">
+            {% if recipe.recipe_image %}
+                <img src="{{ recipe.recipe_image.url }}" alt="{{ recipe.recipe_title }}">
+            {% else %}
+                <div style="display: flex; align-items: center; justify-content: center; font-size: 5rem; color: #FF1493;">
+                    <i class="fa fa-cutlery"></i>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="recipe-info">
+            <div class="recipe-author">
+                <strong>👩‍🍳 By {{ recipe.author.first_name|default:recipe.author.username }}</strong>
+                Posted on {{ recipe.public_date|date:"F j, Y" }}
+            </div>
+            
+            <div class="recipe-meta-section">
+                <div class="recipe-meta-item">
+                    <i class="fa fa-users"></i>
+                    <span class="recipe-meta-label">Servings:</span>
+                    <span class="recipe-meta-value">{{ recipe.servings }}</span>
+                </div>
+                
+                <div class="recipe-meta-item">
+                    <i class="fa fa-clock-o"></i>
+                    <span class="recipe-meta-label">Prep Time:</span>
+                    <span class="recipe-meta-value">{{ recipe.prep_time }} minutes</span>
+                </div>
+                
+                <div class="recipe-meta-item">
+                    <i class="fa fa-fire"></i>
+                    <span class="recipe-meta-label">Cook Time:</span>
+                    <span class="recipe-meta-value">{{ recipe.cook_time }} minutes</span>
+                </div>
+                
+                <div class="recipe-meta-item">
+                    <i class="fa fa-hourglass-end"></i>
+                    <span class="recipe-meta-label">Total Time:</span>
+                    <span class="recipe-meta-value">{{ recipe.prep_time|add:recipe.cook_time }} minutes</span>
+                </div>
+            </div>
+            
+            {% if user.is_authenticated and user == recipe.author %}
+            <div class="action-buttons">
+                <a href="{% url 'App_Blog:edit_recipe' recipe.pk %}" class="action-btn edit-btn">
+                    <i class="fa fa-pencil"></i> Edit
+                </a>
+                <a href="{% url 'App_Blog:delete_recipe' recipe.pk %}" class="action-btn delete-btn">
+                    <i class="fa fa-trash"></i> Delete
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    {% if recipe.description %}
+    <div class="section">
+        <h2>📝 Description</h2>
+        <p>{{ recipe.description }}</p>
+    </div>
+    {% endif %}
+    
+    <div class="section">
+        <h2>🥘 Ingredients</h2>
+        <ul class="ingredients-list">
+            {% for ingredient in recipe.ingredients|linebreaks %}
+                {% if ingredient %}
+                    <li>{{ ingredient }}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h2>👨‍🍳 Instructions</h2>
+        <ol class="instructions-list">
+            {% for instruction in recipe.instructions|linebreaks %}
+                {% if instruction %}
+                    <li>{{ instruction }}</li>
+                {% endif %}
+            {% endfor %}
+        </ol>
+    </div>
+    
+    <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, #FFE4F5 0%, #FFC0E0 100%); border-radius: 12px; margin-top: 2rem;">
+        <p style="color: #555; margin-bottom: 1rem; font-size: 1.1rem;">👩‍🤝‍👩 Loved this recipe? Share it with your community!</p>
+        <a href="{% url 'App_Blog:recipe_list' %}" style="display: inline-block; background: linear-gradient(135deg, #FF69B4, #FF1493); color: white; padding: 0.75rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600;">
+            <i class="fa fa-cutlery"></i> Browse More Recipes
+        </a>
+    </div>
+</div>
+
+{% endblock %}

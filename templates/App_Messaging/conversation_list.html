@@ -1,0 +1,97 @@
+{% extends 'Base.html' %}
+{% load crispy_forms_tags %}
+{% load messaging_tags %}
+
+{% block title %}Messages - Hormone Harmony{% endblock title %}
+
+{% block body_block %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-10 offset-lg-1">
+            <div style="background: linear-gradient(135deg, #FFC0E0 0%, #FFE4F5 100%); padding: 2rem; border-radius: 15px; margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2 style="margin: 0; color: #333; font-weight: 700;">💬 My Messages</h2>
+                    <a href="{% url 'App_Messaging:start_conversation' %}" class="btn" style="background: linear-gradient(135deg, #FF69B4, #FF1493); color: white; border: none; font-weight: 600;">
+                        <i class="fa fa-plus"></i> New Chat
+                    </a>
+                </div>
+            </div>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            {% if conversations %}
+                <div class="row">
+                    {% for conversation in conversations %}
+                        <div class="col-md-12 mb-3">
+                            <a href="{% url 'App_Messaging:conversation_detail' conversation.id %}" 
+                               style="text-decoration: none; color: inherit;">
+                                <div class="card" style="border: none; border-radius: 12px; box-shadow: 0 2px 8px rgba(255, 192, 224, 0.3); transition: all 0.3s ease; background: linear-gradient(135deg, #FFF5FB 0%, #FFFAF0 100%);">
+                                    <div class="card-body" style="padding: 1.25rem;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                                            <div style="flex: 1;">
+                                                <h5 style="margin: 0; color: #333; font-weight: 700;">
+                                                    {{ conversation|get_other_user:request.user }}
+                                                </h5>
+                                                {% with last_message=conversation.messages.last %}
+                                                    {% if last_message %}
+                                                        <small style="color: #666; margin-top: 0.5rem; display: block;">
+                                                            {% if last_message.sender == request.user %}
+                                                                <strong>You:</strong>
+                                                            {% else %}
+                                                                <strong>{{ last_message.sender.get_full_name|default:last_message.sender.username }}:</strong>
+                                                            {% endif %}
+                                                            {{ last_message.content|truncatewords:8 }}
+                                                        </small>
+                                                        <small style="color: #999;">
+                                                            {{ last_message.created_at|timesince }} ago
+                                                        </small>
+                                                    {% else %}
+                                                        <small style="color: #999;">No messages yet</small>
+                                                    {% endif %}
+                                                {% endwith %}
+                                            </div>
+                                            <div class="text-end" style="margin-left: 1rem;">
+                                                {% for msg in conversation.messages.all %}
+                                                    {% if not msg.is_read and msg.sender != request.user %}
+                                                        <span class="badge" style="background: linear-gradient(135deg, #FF69B4, #FF1493); border-radius: 50%; padding: 0.5rem 0.75rem; font-size: 0.85rem;">New</span>
+                                                        {% break %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="card" style="border: none; border-radius: 12px; box-shadow: 0 2px 8px rgba(255, 192, 224, 0.3); background: linear-gradient(135deg, #FFF5FB 0%, #FFFAF0 100%);">
+                    <div class="card-body text-center" style="padding: 3rem 1.5rem;">
+                        <i class="fa fa-comments" style="font-size: 3rem; color: #FFB6D9; margin-bottom: 1rem; display: block;"></i>
+                        <p style="color: #666; margin-bottom: 1rem; font-size: 1.1rem;">No conversations yet</p>
+                        <p style="color: #999; margin-bottom: 1.5rem;">Start a conversation with another user!</p>
+                        <a href="{% url 'App_Messaging:start_conversation' %}" class="btn" style="background: linear-gradient(135deg, #FF69B4, #FF1493); color: white; border: none; font-weight: 600;">
+                            <i class="fa fa-plus"></i> Start First Chat
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .card:hover {
+        box-shadow: 0 4px 16px rgba(255, 192, 224, 0.4) !important;
+        transform: translateY(-2px);
+    }
+</style>
+{% endblock %}

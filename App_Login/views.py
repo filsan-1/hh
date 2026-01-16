@@ -1,42 +1,60 @@
 from App_Login.forms import ProfilePic, SignUpForm, UserProfileChange
 from django.shortcuts import render
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm,PasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from App_Login.forms import SignUpForm,UserProfileChange,ProfilePic
-
+from django.contrib import messages
+from django.views.decorators.http import require_http_methods
 
 
 # Create your views here.
+@require_http_methods(["GET", "POST"])
 def sign_up(request):
     form = SignUpForm()
-    registered =False
-    if request.method =='POST':
+    registered = False
+    if request.method == 'POST':
         form = SignUpForm(data=request.POST)
         if form.is_valid():
-            form.save()
-            registered=True
-    dict = {'form':form,'registered':registered}
+            user = form.save()
+            # Create user profile
+            from App_Login.models import UserProfile
+            UserProfile.objects.get_or_create(user=user)
+            registered = True
+            messages.success(request, 'Account created successfully! Please log in.')
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f'{field}: {error}')
+    
+    context = {'form': form, 'registered': registered}
+    return render(request, 'App_Login/signup.html', context=context)
 
-    return render(request,'App_Login/signup.html',context=dict)
 
-
-
+@require_http_methods(["GET", "POST"])
 def login_page(request):
-    form= AuthenticationForm()
-    if request.method =='POST':
-        form =AuthenticationForm(data=request.POST)
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('Home:home'))
+    
+    form = AuthenticationForm()
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
-                login(request,user)
-                return HttpResponseRedirect(reverse('index'))
-
-    return render(request, 'App_Login/login.html', context={'form':form})
+                login(request, user)
+                messages.success(request, f'Welcome back, {user.username}!')
+                next_url = request.GET.get('next', 'Home:home')
+                return HttpResponseRedirect(reverse(next_url) if 'Home:' in next_url else reverse('Home:home'))
+            else:
+                messages.error(request, 'Invalid username or password.')
+        else:
+            messages.error(request, 'Invalid username or password.')
+    
+    return render(request, 'App_Login/login.html', context={'form': form})
 
 
 

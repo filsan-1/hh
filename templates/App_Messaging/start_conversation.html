@@ -1,0 +1,36 @@
+{% extends 'Base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Start Conversation - Hormone Harmony{% endblock title %}
+
+{% block body_block %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3">
+            <div style="background: linear-gradient(135deg, #FFF5FB 0%, #FFFAF0 100%); padding: 2.5rem; border-radius: 15px; box-shadow: 0 4px 12px rgba(255, 192, 224, 0.25);">
+                <h2 style="text-align: center; margin-bottom: 2rem; color: #333; font-weight: 700;">💬 Start New Chat</h2>
+                
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <form method="post" novalidate>
+                    {{ form|crispy }}
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-block" style="width: 100%; background: linear-gradient(135deg, #FF69B4, #FF1493); color: white; border: none; font-weight: 600; padding: 0.75rem; border-radius: 8px; margin-top: 1rem;">
+                        Start Conversation
+                    </button>
+                </form>
+                
+                <hr style="margin: 2rem 0; border-color: #FFD7E8;">
+                <a href="{% url 'App_Messaging:conversation_list' %}" class="btn btn-outline-secondary" style="width: 100%;">← Back to Messages</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

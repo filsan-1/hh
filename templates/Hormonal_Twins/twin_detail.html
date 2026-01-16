@@ -1,0 +1,349 @@
+{% extends 'Base.html' %}
+{% load static %}
+
+{% block title %}{{ twin.user.get_full_name }} - Hormonal Twin Profile - Hormone Harmony{% endblock %}
+
+{% block body_block %}
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #FFF5FB;
+    }
+    
+    .back-link {
+        margin-bottom: 1.5rem;
+    }
+    
+    .back-link a {
+        color: #FF1493;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    
+    .back-link a:hover {
+        color: #FF69B4;
+    }
+    
+    .profile-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(255, 20, 147, 0.15);
+        margin-bottom: 2rem;
+    }
+    
+    .profile-header {
+        background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
+        padding: 2rem;
+        text-align: center;
+        color: white;
+    }
+    
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-size: 3rem;
+        font-weight: 700;
+        border: 4px solid white;
+        overflow: hidden;
+        object-fit: cover;
+    }
+    
+    .profile-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .profile-name {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .profile-username {
+        opacity: 0.95;
+        font-size: 0.95rem;
+    }
+    
+    .profile-body {
+        padding: 2.5rem;
+    }
+    
+    .section {
+        margin-bottom: 2.5rem;
+    }
+    
+    .section:last-child {
+        margin-bottom: 0;
+    }
+    
+    .section-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid #FFE4F5;
+    }
+    
+    .bio-text {
+        color: #555;
+        line-height: 1.8;
+        font-size: 0.95rem;
+    }
+    
+    .issue-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+    
+    .issue-tag {
+        background: linear-gradient(135deg, #FF69B4, #FF1493);
+        color: white;
+        padding: 0.6rem 1.2rem;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .primary-issue {
+        background: linear-gradient(135deg, #FF1493, #C71585);
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+    
+    .stat-box {
+        background: #FFF5FB;
+        padding: 1.5rem;
+        border-radius: 8px;
+        text-align: center;
+        border: 2px solid #FFE4F5;
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #FF1493;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+        color: #666;
+        font-size: 0.85rem;
+    }
+    
+    .action-section {
+        background: #FFF5FB;
+        padding: 2rem;
+        border-radius: 12px;
+        text-align: center;
+        margin-top: 2rem;
+        border: 2px dashed #FFE4F5;
+    }
+    
+    .action-title {
+        color: #333;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .btn {
+        padding: 0.85rem 2rem;
+        border: none;
+        border-radius: 50px;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .btn-connect {
+        background: linear-gradient(135deg, #FF69B4, #FF1493);
+        color: white;
+    }
+    
+    .btn-connect:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(255, 20, 147, 0.3);
+    }
+    
+    .btn-cancel {
+        background: #F0F0F0;
+        color: #333;
+        border: 2px solid #E0E0E0;
+    }
+    
+    .btn-cancel:hover {
+        background: #E8E8E8;
+    }
+    
+    .status-badge {
+        display: inline-block;
+        background: #FFD700;
+        color: #333;
+        padding: 0.4rem 1rem;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .status-badge.connected {
+        background: #90EE90;
+        color: #fff;
+    }
+    
+    .status-badge.blocked {
+        background: #FF6B6B;
+        color: #fff;
+    }
+    
+    .info-box {
+        background: #F9F9F9;
+        padding: 1rem;
+        border-radius: 8px;
+        border-left: 4px solid #FF69B4;
+        margin-bottom: 1rem;
+    }
+    
+    .info-box p {
+        margin: 0;
+        color: #666;
+        font-size: 0.9rem;
+    }
+</style>
+
+<div class="container">
+    <div class="back-link">
+        <a href="{% url 'Hormonal_Twins:twin_list' %}">← Back to All Twins</a>
+    </div>
+    
+    <div class="profile-card">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                {% if twin.profile_picture %}
+                    <img src="{{ twin.profile_picture.url }}" alt="{{ twin.user.get_full_name }}">
+                {% else %}
+                    {{ twin.user.first_name|first|upper }}
+                {% endif %}
+            </div>
+            <div class="profile-name">{{ twin.user.get_full_name|default:twin.user.username }}</div>
+            <div class="profile-username">@{{ twin.user.username }}</div>
+            
+            {% if connection_status %}
+                <div style="margin-top: 1rem;">
+                    {% if connection_status == 'connected' %}
+                        <div class="status-badge connected">✓ Connected</div>
+                    {% elif connection_status == 'pending' %}
+                        <div class="status-badge">⏳ Request Pending</div>
+                    {% elif connection_status == 'blocked' %}
+                        <div class="status-badge blocked">🚫 Blocked</div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="profile-body">
+            {% if twin.bio %}
+            <div class="section">
+                <div class="section-title">👋 About</div>
+                <p class="bio-text">{{ twin.bio }}</p>
+            </div>
+            {% endif %}
+            
+            <div class="section">
+                <div class="section-title">🌸 Hormonal Issues</div>
+                <div class="issue-tags">
+                    <div class="issue-tag primary-issue">
+                        💫 Primary: {{ twin.get_primary_issue_display }}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">📊 Connection Stats</div>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-value">{{ twin.connections.count }}</div>
+                        <div class="stat-label">Connections</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">{{ twin.created_at|date:"b d, Y" }}</div>
+                        <div class="stat-label">Joined</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">
+                            {% if twin.is_active %}
+                            Active
+                            {% else %}
+                            Inactive
+                            {% endif %}
+                        </div>
+                        <div class="stat-label">Status</div>
+                    </div>
+                </div>
+            </div>
+            
+            {% if user.is_authenticated and user != twin.user %}
+            <div class="action-section">
+                <div class="action-title">Want to Connect?</div>
+                
+                {% if connection_status == 'connected' %}
+                    <div class="info-box">
+                        <p>✓ You are connected! You can now message this twin and share experiences.</p>
+                    </div>
+                {% elif connection_status == 'pending' %}
+                    <div class="info-box">
+                        <p>⏳ Your connection request is pending. We've sent them a notification!</p>
+                    </div>
+                {% elif connection_status == 'blocked' %}
+                    <div class="info-box">
+                        <p>🚫 You have blocked this user. You can unblock them from your settings.</p>
+                    </div>
+                {% else %}
+                    <form method="POST" action="{% url 'Hormonal_Twins:connect_twin' twin.id %}">
+                        {% csrf_token %}
+                        <div class="action-buttons">
+                            <a href="{% url 'Hormonal_Twins:twin_list' %}" class="btn btn-cancel">
+                                <i class="fa fa-times"></i> Back
+                            </a>
+                            <button type="submit" class="btn btn-connect">
+                                <i class="fa fa-heart"></i> Send Connection Request
+                            </button>
+                        </div>
+                    </form>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

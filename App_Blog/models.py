@@ -40,6 +40,27 @@ class Likes(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE, related_name='liked_user')
 
 
+class Recipe(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipe_author')
+    recipe_title = models.CharField(max_length=264, verbose_name="Recipe Title")
+    slug = models.SlugField(max_length=264, unique=True)
+    description = models.TextField(verbose_name="Recipe Description", blank=True)
+    ingredients = models.TextField(verbose_name="Ingredients (one per line)")
+    instructions = models.TextField(verbose_name="Cooking Instructions")
+    servings = models.IntegerField(default=4)
+    prep_time = models.IntegerField(help_text="Prep time in minutes", default=15)
+    cook_time = models.IntegerField(help_text="Cook time in minutes", default=30)
+    recipe_image = models.ImageField(upload_to='recipe_images', verbose_name="Recipe Image")
+    public_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-public_date']
+
+    def __str__(self):
+        return self.recipe_title
+
+
     
 
 

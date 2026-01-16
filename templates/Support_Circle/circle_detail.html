@@ -1,0 +1,478 @@
+{% extends 'Base.html' %}
+{% load static %}
+
+{% block title %}{{ circle.name }} - Support Circle - Hormone Harmony{% endblock %}
+
+{% block body_block %}
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #F9F9F9;
+    }
+    
+    .circle-header {
+        background: linear-gradient(135deg, #32CD32 0%, #00B050 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+    }
+    
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 2rem;
+    }
+    
+    .header-left h1 {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .header-left p {
+        font-size: 0.95rem;
+        opacity: 0.95;
+        margin-bottom: 0.5rem;
+    }
+    
+    .circle-focus-badge {
+        background: rgba(255, 255, 255, 0.3);
+        padding: 0.4rem 1rem;
+        border-radius: 50px;
+        display: inline-block;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+    
+    .header-stats {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 1rem;
+        border-radius: 8px;
+        min-width: 150px;
+    }
+    
+    .stat-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .stat-row:last-child {
+        margin-bottom: 0;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .btn-primary {
+        background: white;
+        color: #00B050;
+        padding: 0.6rem 1.5rem;
+        border-radius: 50px;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn-secondary {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 0.6rem 1.5rem;
+        border-radius: 50px;
+        border: 2px solid white;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+    
+    .main-container {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 2rem;
+    }
+    
+    @media (max-width: 1024px) {
+        .main-container {
+            grid-template-columns: 1fr;
+        }
+        
+        .sidebar {
+            order: -1;
+        }
+    }
+    
+    .posts-section {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 2px 8px rgba(50, 205, 50, 0.1);
+    }
+    
+    .posts-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        border-bottom: 2px solid #E8E8E8;
+        padding-bottom: 1rem;
+    }
+    
+    .posts-header h2 {
+        color: #333;
+        font-weight: 700;
+        margin: 0;
+    }
+    
+    .post-card {
+        background: #F9F9F9;
+        border-left: 4px solid #32CD32;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .post-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 1rem;
+    }
+    
+    .post-author {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .author-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #32CD32, #00B050);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.1rem;
+    }
+    
+    .author-info {
+        flex: 1;
+    }
+    
+    .author-name {
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 0.2rem;
+    }
+    
+    .post-date {
+        color: #999;
+        font-size: 0.85rem;
+    }
+    
+    .post-title {
+        color: #333;
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .post-content {
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+    
+    .post-actions {
+        display: flex;
+        gap: 1rem;
+    }
+    
+    .action-link {
+        color: #00B050;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+    
+    .action-link:hover {
+        color: #32CD32;
+    }
+    
+    .sidebar {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 8px rgba(50, 205, 50, 0.1);
+        height: fit-content;
+    }
+    
+    .sidebar-section {
+        margin-bottom: 2rem;
+    }
+    
+    .sidebar-section:last-child {
+        margin-bottom: 0;
+    }
+    
+    .sidebar-title {
+        color: #333;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .member-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .member-item {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #E8E8E8;
+    }
+    
+    .member-item:last-child {
+        border-bottom: none;
+    }
+    
+    .member-link {
+        color: #00B050;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+    
+    .member-link:hover {
+        color: #32CD32;
+    }
+    
+    .empty-posts {
+        text-align: center;
+        padding: 2rem;
+        background: linear-gradient(135deg, #F0FFF0 0%, #F5FFFA 100%);
+        border-radius: 8px;
+        border: 2px dashed #90EE90;
+    }
+    
+    .empty-posts i {
+        font-size: 2.5rem;
+        color: #32CD32;
+        margin-bottom: 0.5rem;
+    }
+    
+    .empty-posts h4 {
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+    
+    .empty-posts p {
+        color: #666;
+        font-size: 0.9rem;
+    }
+    
+    .comment-form {
+        background: linear-gradient(135deg, #F0FFF0 0%, #F5FFFA 100%);
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+    }
+    
+    .comment-form textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #D0F0C0;
+        border-radius: 6px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 0.9rem;
+        margin-bottom: 0.75rem;
+        resize: vertical;
+        min-height: 80px;
+    }
+    
+    .comment-form button {
+        background: linear-gradient(135deg, #32CD32, #00B050);
+        color: white;
+        padding: 0.6rem 1.5rem;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .comment-form button:hover {
+        background: linear-gradient(135deg, #00B050, #228B22);
+        transform: translateY(-2px);
+    }
+</style>
+
+<div class="container">
+    <div class="circle-header">
+        <div class="header-content">
+            <div class="header-left">
+                <h1>{{ circle.icon }} {{ circle.name }}</h1>
+                <p>{{ circle.description }}</p>
+                <div class="circle-focus-badge">{{ circle.get_focus_area_display }}</div>
+                
+                <div class="action-buttons">
+                    {% if user.is_authenticated and user in circle.members.all %}
+                        <a href="{% url 'Support_Circle:create_post' circle.id %}" class="btn-primary">
+                            <i class="fa fa-plus"></i> New Post
+                        </a>
+                        <a href="{% url 'Support_Circle:leave_circle' circle.id %}" class="btn-secondary" onclick="return confirm('Leave this circle?');">
+                            <i class="fa fa-sign-out"></i> Leave
+                        </a>
+                    {% elif user.is_authenticated %}
+                        <a href="{% url 'Support_Circle:join_circle' circle.id %}" class="btn-primary">
+                            <i class="fa fa-sign-in"></i> Join Circle
+                        </a>
+                    {% else %}
+                        <a href="{% url 'App_Login:signin' %}" class="btn-primary">
+                            <i class="fa fa-sign-in"></i> Login to Join
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="header-stats">
+                <div class="stat-row">
+                    <span>👥 Members</span>
+                    <strong>{{ circle.members.count }}</strong>
+                </div>
+                <div class="stat-row">
+                    <span>💬 Posts</span>
+                    <strong>{{ circle.posts.count }}</strong>
+                </div>
+                <div class="stat-row">
+                    <span>📅 Created</span>
+                    <strong>{{ circle.created_at|date:"M d, Y" }}</strong>
+                </div>
+                <div class="stat-row">
+                    <span>🔒 Status</span>
+                    <strong>{% if circle.is_private %}Private{% else %}Public{% endif %}</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main-container">
+        <div class="posts-section">
+            <div class="posts-header">
+                <h2>💬 Posts ({{ circle.posts.count }})</h2>
+            </div>
+            
+            {% if user.is_authenticated and user in circle.members.all %}
+            <div class="comment-form">
+                <form method="POST" action="{% url 'Support_Circle:create_post' circle.id %}">
+                    {% csrf_token %}
+                    <textarea name="title" placeholder="Post Title" required></textarea>
+                    <textarea name="content" placeholder="Share your thoughts, experiences, or support..." required></textarea>
+                    <button type="submit"><i class="fa fa-send"></i> Post</button>
+                </form>
+            </div>
+            {% endif %}
+            
+            {% if circle.posts.all %}
+                {% for post in circle.posts.all %}
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-author">
+                            <div class="author-avatar">{{ post.author.first_name|first|upper }}</div>
+                            <div class="author-info">
+                                <div class="author-name">{{ post.author.get_full_name|default:post.author.username }}</div>
+                                <div class="post-date">{{ post.created_at|timesince }} ago</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="post-title">{{ post.title }}</h3>
+                    <p class="post-content">{{ post.content }}</p>
+                    
+                    <div class="post-actions">
+                        <span class="action-link">
+                            <i class="fa fa-heart"></i> {{ post.likes.count }} Likes
+                        </span>
+                        <span class="action-link">
+                            <i class="fa fa-comment"></i> {{ post.comments.count }} Comments
+                        </span>
+                        {% if user.is_authenticated and user in circle.members.all %}
+                        <form method="POST" action="{% url 'Support_Circle:like_post' post.id %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="background: none; border: none; color: #00B050; cursor: pointer; font-weight: 600;">
+                                <i class="fa fa-thumbs-up"></i> Like
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-posts">
+                    <i class="fa fa-comments"></i>
+                    <h4>No Posts Yet</h4>
+                    <p>Be the first to share your experiences in this circle!</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">👥 Members ({{ circle.members.count }})</div>
+                <ul class="member-list">
+                    {% for member in circle.members.all|slice:":5" %}
+                    <li class="member-item">
+                        <a href="{% url 'App_Login:profile' member.id %}" class="member-link">
+                            {{ member.get_full_name|default:member.username }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                    {% if circle.members.count > 5 %}
+                    <li class="member-item">
+                        <em style="color: #999; font-size: 0.85rem;">+{{ circle.members.count|add:"-5" }} more members</em>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            
+            {% if user.is_authenticated and circle.creator == user %}
+            <div class="sidebar-section">
+                <div class="sidebar-title">⚙️ Manage</div>
+                <a href="{% url 'Support_Circle:edit_circle' circle.id %}" class="action-link" style="display: block; padding: 0.5rem 0;">
+                    <i class="fa fa-edit"></i> Edit Circle
+                </a>
+                <a href="{% url 'Support_Circle:delete_circle' circle.id %}" class="action-link" style="display: block; padding: 0.5rem 0; color: #FF6B6B;" onclick="return confirm('Delete this circle?');">
+                    <i class="fa fa-trash"></i> Delete Circle
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
