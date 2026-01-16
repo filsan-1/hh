@@ -39,14 +39,41 @@ Hormone Harmony is a platform where women with PCOS come together to blog and sh
 
 ## Features:
 
-- [x] Sign up, Login, Logout
-- [x] Write Blog
-- [x] Edit Profile
-- [x] Information about PCOS, Self care
+- [x] Sign up, Login, Logout with form validation
+- [x] Write Blog with image uploads
+- [x] Edit and delete blog posts
+- [x] Like and comment on blogs
+- [x] View blog details with comments
+- [x] Create, edit, and delete recipes
+- [x] Recipe sharing with cooking instructions, ingredients, and timing
+- [x] Track period cycles with custom period tracking
+- [x] Log symptoms and health data
+- [x] View period history and details
+- [x] Edit Profile with profile picture
+- [x] Information about PCOS and self-care tips
 - [x] Frequently asked questions
 - [x] Contact section
+- [x] Support circle for community discussions
+- [x] Messaging system between users
+- [x] Admin dashboard for content management
+- [x] Responsive design for all devices
+- [x] Custom template tags for enhanced functionality
 
 
+
+
+## Recent Updates (January 2026):
+
+- ✅ **Recipe Management System**: Full CRUD operations for recipes with image uploads
+- ✅ **Period Tracking**: Complete period tracking system with symptoms logging
+- ✅ **Enhanced Authentication**: Improved login and signup forms with validation
+- ✅ **Blog Improvements**: Added likes, comments, and better image handling
+- ✅ **UI/UX Enhancements**: Modern gradient designs and responsive layouts
+- ✅ **Bug Fixes**: Fixed recipe URL routing and template issues
+- ✅ **Media Management**: Created proper directory structure for images
+- ✅ **Docker Support**: Added Docker and docker-compose configuration
+- ✅ **Form Validation**: Implemented comprehensive form validation across all apps
+- ✅ **Custom Template Tags**: Added custom filters for enhanced template functionality
 
 
 ## Future Prospects:
