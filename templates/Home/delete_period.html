@@ -1,0 +1,55 @@
+{% extends 'Base.html' %}
+
+{% block title %}Delete Period - Hormone Harmony{% endblock title %}
+
+{% block body_block %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3">
+            <div class="card" style="background: linear-gradient(135deg, #FFF5FB 0%, #FFFBFD 100%); border: none; border-radius: 15px; box-shadow: 0 4px 12px rgba(255, 105, 180, 0.2);">
+                <div class="card-body" style="padding: 2.5rem; text-align: center;">
+                    <div style="font-size: 4rem; color: #FF1493; margin-bottom: 1.5rem;">
+                        <i class="fa fa-exclamation-triangle"></i>
+                    </div>
+                    
+                    <h2 style="color: #333; font-weight: 700; margin-bottom: 1rem;">
+                        Delete Period Record?
+                    </h2>
+                    
+                    <div style="background: white; padding: 1.5rem; border-radius: 10px; margin: 2rem 0; text-align: left;">
+                        <p style="margin: 0.5rem 0; color: #666;">
+                            <strong>Start Date:</strong> {{ period.start_date|date:"F d, Y" }}
+                        </p>
+                        <p style="margin: 0.5rem 0; color: #666;">
+                            <strong>End Date:</strong> {{ period.end_date|date:"F d, Y"|default:"Ongoing" }}
+                        </p>
+                        <p style="margin: 0.5rem 0; color: #666;">
+                            <strong>Symptoms:</strong> {{ period.symptom_set.count }} recorded
+                        </p>
+                    </div>
+                    
+                    <div class="alert alert-warning" style="border-radius: 10px; border-left: 4px solid #FFA000; text-align: left;">
+                        <i class="fa fa-warning"></i> <strong>Warning:</strong> This action cannot be undone. All symptoms associated with this period will also be deleted.
+                    </div>
+                    
+                    <form method="post" style="margin-top: 2rem;">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <button type="submit" class="btn btn-danger" style="width: 100%; font-weight: 600; padding: 0.75rem; border-radius: 8px;">
+                                    <i class="fa fa-trash"></i> Yes, Delete
+                                </button>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <a href="{% url 'Home:period_detail' period.id %}" class="btn btn-secondary" style="width: 100%; padding: 0.75rem; border-radius: 8px;">
+                                    <i class="fa fa-times"></i> Cancel
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

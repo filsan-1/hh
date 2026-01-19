@@ -7,14 +7,14 @@
     <div class="row">
         <div class="col-lg-10 offset-lg-1">
             <!-- Header Section -->
-            <div style="background: linear-gradient(135deg, #FFC0E0 0%, #FFE4F5 100%); padding: 2rem; border-radius: 15px; margin-bottom: 2rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="background: linear-gradient(135deg, #FFC0E0 0%, #FFE4F5 100%); padding: 2rem; border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 4px 12px rgba(255, 105, 180, 0.2);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                     <div>
                         <h2 style="margin: 0; color: #333; font-weight: 700;">📅 My Period Tracker</h2>
-                        <p style="margin: 0.5rem 0 0 0; color: #666;">Track and manage your menstrual cycle</p>
+                        <p style="margin: 0.5rem 0 0 0; color: #666;">Track and manage your menstrual cycle with insights</p>
                     </div>
                     {% if user.is_authenticated %}
-                    <a href="{% url 'Home:add_period' %}" class="btn" style="background: linear-gradient(135deg, #FF69B4, #FF1493); color: white; border: none; font-weight: 600;">
+                    <a href="{% url 'Home:add_period' %}" class="btn mt-2" style="background: linear-gradient(135deg, #FF69B4, #FF1493); color: white; border: none; font-weight: 600; box-shadow: 0 2px 8px rgba(255, 20, 147, 0.3);">
                         <i class="fa fa-plus"></i> Add Period
                     </a>
                     {% endif %}
@@ -23,41 +23,93 @@
 
             {% if messages %}
                 {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="border-radius: 10px; border-left: 4px solid {% if message.tags == 'success' %}#28a745{% else %}#dc3545{% endif %};">
                         {{ message }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                 {% endfor %}
             {% endif %}
 
+            <!-- Statistics Cards -->
             {% if periods %}
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3">
+                    <div class="card" style="border: none; border-radius: 12px; box-shadow: 0 2px 8px rgba(255, 192, 224, 0.3); background: linear-gradient(135deg, #FFF5FB 0%, #FFFBFD 100%);">
+                        <div class="card-body text-center">
+                            <i class="fa fa-calendar" style="font-size: 2rem; color: #FF69B4; margin-bottom: 0.5rem;"></i>
+                            <h5 style="color: #666; font-size: 0.9rem; margin: 0;">Total Periods</h5>
+                            <h3 style="color: #FF1493; font-weight: 700; margin: 0.5rem 0 0 0;">{{ periods.count }}</h3>
+                        </div>
+                    </div>
+                </div>
+                {% if avg_cycle %}
+                <div class="col-md-4 mb-3">
+                    <div class="card" style="border: none; border-radius: 12px; box-shadow: 0 2px 8px rgba(255, 192, 224, 0.3); background: linear-gradient(135deg, #FFF5FB 0%, #FFFBFD 100%);">
+                        <div class="card-body text-center">
+                            <i class="fa fa-refresh" style="font-size: 2rem; color: #FF69B4; margin-bottom: 0.5rem;"></i>
+                            <h5 style="color: #666; font-size: 0.9rem; margin: 0;">Avg Cycle</h5>
+                            <h3 style="color: #FF1493; font-weight: 700; margin: 0.5rem 0 0 0;">{{ avg_cycle }} days</h3>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% if predicted_next %}
+                <div class="col-md-4 mb-3">
+                    <div class="card" style="border: none; border-radius: 12px; box-shadow: 0 2px 8px rgba(255, 192, 224, 0.3); background: linear-gradient(135deg, #E8F5E9 0%, #F1F8E9 100%);">
+                        <div class="card-body text-center">
+                            <i class="fa fa-bell" style="font-size: 2rem; color: #4CAF50; margin-bottom: 0.5rem;"></i>
+                            <h5 style="color: #666; font-size: 0.9rem; margin: 0;">Next Period</h5>
+                            <h3 style="color: #2E7D32; font-weight: 700; margin: 0.5rem 0 0 0; font-size: 1.3rem;">{{ predicted_next|date:"M d" }}</h3>
+                            {% if days_until_next >= 0 %}
+                            <small style="color: #666;">in {{ days_until_next }} days</small>
+                            {% else %}
+                            <small style="color: #dc3545;">{{ days_until_next|add:"0"|stringformat:"d" }} days ago</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
                 <div class="row">
                     {% for period in periods %}
                         <div class="col-md-6 mb-4">
                             <a href="{% url 'Home:period_detail' period.id %}" style="text-decoration: none; color: inherit;">
-                                <div class="card" style="border: none; border-radius: 12px; box-shadow: 0 2px 8px rgba(255, 192, 224, 0.3); transition: all 0.3s ease; height: 100%; background: linear-gradient(135deg, #FFF5FB 0%, #FFFBFD 100%);">
+                                <div class="card period-card" style="border: none; border-radius: 12px; box-shadow: 0 2px 8px rgba(255, 192, 224, 0.3); transition: all 0.3s ease; height: 100%; background: linear-gradient(135deg, #FFF5FB 0%, #FFFBFD 100%);">
                                     <div class="card-body">
-                                        <h5 style="color: #FF1493; font-weight: 700; margin-bottom: 1rem;">
-                                            <i class="fa fa-calendar-o"></i> Period #{{ forloop.counter }}
-                                        </h5>
+                                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                            <h5 style="color: #FF1493; font-weight: 700; margin: 0;">
+                                                <i class="fa fa-calendar-o"></i> {{ period.start_date|date:"M Y" }}
+                                            </h5>
+                                            {% if period.flow %}
+                                            <span class="badge" style="background: {% if period.flow == 'heavy' %}#FF1493{% elif period.flow == 'medium' %}#FF69B4{% elif period.flow == 'light' %}#FFB6D9{% else %}#FFE4F5{% endif %}; color: white; font-size: 0.75rem;">
+                                                💧 {{ period.get_flow_display }}
+                                            </span>
+                                            {% endif %}
+                                        </div>
                                         <div style="background: white; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                                            <p style="margin: 0.5rem 0;">
-                                                <strong>Start Date:</strong> {{ period.start_date|date:"F d, Y" }}
+                                            <p style="margin: 0.5rem 0; font-size: 0.95rem;">
+                                                <strong style="color: #666;">Start:</strong> <span style="color: #333;">{{ period.start_date|date:"F d, Y" }}</span>
                                             </p>
-                                            <p style="margin: 0.5rem 0;">
-                                                <strong>End Date:</strong> {{ period.end_date|date:"F d, Y" }}
+                                            <p style="margin: 0.5rem 0; font-size: 0.95rem;">
+                                                <strong style="color: #666;">End:</strong> <span style="color: #333;">{{ period.end_date|date:"F d, Y"|default:"Ongoing" }}</span>
                                             </p>
-                                            <p style="margin: 0.5rem 0;">
-                                                <strong>Cycle Length:</strong> {{ period.cycle_length }} days
+                                            {% if period.get_duration %}
+                                            <p style="margin: 0.5rem 0; font-size: 0.95rem;">
+                                                <strong style="color: #666;">Duration:</strong> <span style="color: #333;">{{ period.get_duration }} days</span>
+                                            </p>
+                                            {% endif %}
+                                            <p style="margin: 0.5rem 0; font-size: 0.95rem;">
+                                                <strong style="color: #666;">Cycle:</strong> <span style="color: #333;">{{ period.cycle_length }} days</span>
                                             </p>
                                         </div>
                                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                                            <span class="badge" style="background: linear-gradient(135deg, #FF69B4, #FF1493);">
-                                                {{ period.symptom_set.count }} symptoms
+                                            <span class="badge" style="background: linear-gradient(135deg, #FF69B4, #FF1493); font-size: 0.85rem;">
+                                                🩺 {{ period.symptom_set.count }} symptom{{ period.symptom_set.count|pluralize }}
                                             </span>
-                                            <a href="{% url 'Home:period_detail' period.id %}" class="btn btn-sm" style="background: var(--primary-pink); color: white; border: none;">
-                                                View →
-                                            </a>
+                                            <span style="color: #FF69B4; font-weight: 600; font-size: 0.9rem;">
+                                                View Details →
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -68,17 +120,17 @@
             {% else %}
                 <div class="card" style="border: none; border-radius: 12px; box-shadow: 0 2px 8px rgba(255, 192, 224, 0.3); background: linear-gradient(135deg, #FFF5FB 0%, #FFFBFD 100%);">
                     <div class="card-body text-center" style="padding: 3rem 1.5rem;">
-                        <i class="fa fa-calendar" style="font-size: 3rem; color: #FFB6D9; margin-bottom: 1rem; display: block;"></i>
-                        <p style="color: #666; margin-bottom: 1rem; font-size: 1.1rem;">No period records yet</p>
-                        <p style="color: #999; margin-bottom: 1.5rem;">Start tracking your periods to get insights and predictions</p>
+                        <i class="fa fa-calendar" style="font-size: 4rem; color: #FFB6D9; margin-bottom: 1.5rem; display: block;"></i>
+                        <h4 style="color: #333; margin-bottom: 1rem; font-weight: 600;">No period records yet</h4>
+                        <p style="color: #666; margin-bottom: 2rem; font-size: 1.05rem;">Start tracking your periods to get insights, predictions, and symptom analysis</p>
                         {% if user.is_authenticated %}
-                        <a href="{% url 'Home:add_period' %}" class="btn" style="background: linear-gradient(135deg, #FF69B4, #FF1493); color: white; border: none; font-weight: 600;">
+                        <a href="{% url 'Home:add_period' %}" class="btn" style="background: linear-gradient(135deg, #FF69B4, #FF1493); color: white; border: none; font-weight: 600; padding: 0.75rem 2rem; font-size: 1.1rem; box-shadow: 0 2px 8px rgba(255, 20, 147, 0.3);">
                             <i class="fa fa-plus"></i> Add Your First Period
                         </a>
                         {% else %}
                         <p>
-                            <a href="{% url 'App_Login:signin' %}" class="btn" style="background: linear-gradient(135deg, #FF69B4, #FF1493); color: white; border: none; font-weight: 600; text-decoration: none; display: inline-block;">
-                                Login to Track
+                            <a href="{% url 'App_Login:signin' %}" class="btn" style="background: linear-gradient(135deg, #FF69B4, #FF1493); color: white; border: none; font-weight: 600; text-decoration: none; display: inline-block; padding: 0.75rem 2rem; font-size: 1.1rem;">
+                                Login to Start Tracking
                             </a>
                         </p>
                         {% endif %}
@@ -90,8 +142,8 @@
 </div>
 
 <style>
-    .card:hover {
-        box-shadow: 0 4px 16px rgba(255, 192, 224, 0.4) !important;
+    .period-card:hover {
+        box-shadow: 0 4px 16px rgba(255, 192, 224, 0.5) !important;
         transform: translateY(-4px);
     }
 </style>
