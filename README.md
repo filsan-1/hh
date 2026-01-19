@@ -58,6 +58,27 @@ Hormone Harmony is a platform where women with PCOS come together to blog and sh
 - [x] Admin dashboard for content management
 - [x] Responsive design for all devices
 - [x] Custom template tags for enhanced functionality
+- [ ] ⚡ Setup Guidelines
+
+Clone the repo:
+
+git clone
+
+Create and activate a virtual environment:
+
+python3 -m venv venv source venv/bin/activate
+
+Install dependencies:
+
+pip install -r requirements.txt
+
+Apply migrations:
+
+python manage.py migrate
+
+Run the development server:
+
+python manage.py runserver
 
 
 
