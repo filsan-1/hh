@@ -27,9 +27,9 @@ MEDIA_DIR = os.path.join(BASE_DIR,'media')
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
 
 # Application definition
@@ -163,16 +163,23 @@ X_FRAME_OPTIONS = 'DENY'
 
 # Session Security
 SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SAMESITE = 'Strict'
+SESSION_COOKIE_SAMESITE = 'Lax'  # Changed from Strict to Lax for better compatibility
 SESSION_COOKIE_AGE = 3600  # 1 hour
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # CSRF Protection
-CSRF_COOKIE_HTTPONLY = True
-CSRF_COOKIE_SAMESITE = 'Strict'
-CSRF_USE_SESSIONS = True
+CSRF_COOKIE_HTTPONLY = False  # Must be False for CSRF to work properly
+CSRF_COOKIE_SAMESITE = 'Lax'  # Changed from Strict to Lax for better compatibility
+CSRF_USE_SESSIONS = False  # Changed to False to use cookie-based CSRF
 CSRF_COOKIE_AGE = 3600
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.github.dev',
+    'https://*.githubpreview.dev',
+    'https://*.app.github.dev',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
 
 # Login/Logout URLs
 LOGIN_URL = '/account/login/'
