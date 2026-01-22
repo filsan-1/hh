@@ -147,11 +147,9 @@ if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
 else:
     SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = False
-    CSRF_COOKIE_SECURE = False
 
 # Security Headers
 SECURE_HSTS_SECONDS = 31536000  # 1 year
@@ -169,10 +167,11 @@ SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # CSRF Protection
-CSRF_COOKIE_HTTPONLY = False  # Must be False for CSRF to work properly
-CSRF_COOKIE_SAMESITE = 'Lax'  # Changed from Strict to Lax for better compatibility
-CSRF_USE_SESSIONS = False  # Changed to False to use cookie-based CSRF
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_USE_SESSIONS = False
 CSRF_COOKIE_AGE = 3600
+CSRF_COOKIE_SECURE = False  # Set to False for development/Docker
 CSRF_TRUSTED_ORIGINS = [
     'https://*.github.dev',
     'https://*.githubpreview.dev',
