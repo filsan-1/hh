@@ -19,3 +19,11 @@ def get_other_user_object(conversation, user):
         return conversation.participants.exclude(id=user.id).first()
     except:
         return None
+
+@register.filter
+def has_unread_messages(conversation, user):
+    """Check if conversation has unread messages from other users"""
+    try:
+        return conversation.messages.filter(is_read=False).exclude(sender=user).exists()
+    except:
+        return False

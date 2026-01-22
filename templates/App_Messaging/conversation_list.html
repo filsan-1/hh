@@ -49,12 +49,9 @@
                                                 {% endwith %}
                                             </div>
                                             <div class="text-end" style="margin-left: 1rem;">
-                                                {% for msg in conversation.messages.all %}
-                                                    {% if not msg.is_read and msg.sender != request.user %}
-                                                        <span class="badge" style="background: linear-gradient(135deg, #FF69B4, #FF1493); border-radius: 50%; padding: 0.5rem 0.75rem; font-size: 0.85rem;">New</span>
-                                                        {% break %}
-                                                    {% endif %}
-                                                {% endfor %}
+                                                {% if conversation|has_unread_messages:request.user %}
+                                                    <span class="badge" style="background: linear-gradient(135deg, #FF69B4, #FF1493); border-radius: 50%; padding: 0.5rem 0.75rem; font-size: 0.85rem;">New</span>
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>
