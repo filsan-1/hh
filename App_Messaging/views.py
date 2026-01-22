@@ -32,9 +32,9 @@ def conversation_detail(request, conversation_id):
         return redirect('App_Messaging:conversation_list')
     
     # Mark messages as read
-    unread_messages = conversation.messages.filter(~Q(sender=request.user), is_read=False)
-    for message in unread_messages:
-        message.mark_as_read()
+    unread_messages = conversation.messages.filter(is_read=False).exclude(sender=request.user)
+    for msg in unread_messages:
+        msg.mark_as_read()
     
     form = MessageForm()
     
@@ -47,12 +47,12 @@ def conversation_detail(request, conversation_id):
             message.save()
             return redirect('App_Messaging:conversation_detail', conversation_id=conversation.id)
     
-    messages = conversation.messages.all()
+    chat_messages = conversation.messages.all()
     other_user = conversation.get_other_user(request.user)
     
     context = {
         'conversation': conversation,
-        'messages': messages,
+        'chat_messages': chat_messages,
         'form': form,
         'other_user': other_user,
         'page_title': f'Chat with {other_user.get_full_name() or other_user.username}',

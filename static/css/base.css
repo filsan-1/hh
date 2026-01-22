@@ -955,7 +955,7 @@ nav ul {
   padding: 0;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
 }
 
 nav ul li {
@@ -966,49 +966,75 @@ nav ul li {
 nav ul li a,
 nav ul li a:visited {
   display: inline-block;
-  padding: 10px 14px;
+  padding: 12px 20px;
   color: #ffffff;
   transition: all 0.3s ease;
   text-decoration: none;
-  font-weight: 500;
-  font-size: 0.9rem;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
+  white-space: nowrap;
 }
 
 nav ul li a:hover,
 nav ul li a:visited:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.3);
   color: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
+
+nav ul li a.nav-login {
+  background: rgba(255, 255, 255, 0.25);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+nav ul li a.nav-signup {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+  color: #FF1493;
+  font-weight: 700;
+}
+
+nav ul li a.nav-signup:hover {
+  background: #ffffff;
+  color: #FF1493;
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
+}
+
+nav ul li a.nav-logout {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 nav ul li a:not(:only-child):after,
 nav ul li a:visited:not(:only-child):after {
-  padding-left: 4px;
+  padding-left: 6px;
   content: ' ▾';
+  font-size: 0.8rem;
 }
 nav ul li ul li {
-  min-width: 190px;
+  min-width: 200px;
 }
 nav ul li ul li a {
-  padding: 15px;
+  padding: 14px 20px !important;
   line-height: 20px;
+  font-size: 0.9rem !important;
 }
 
 .nav-dropdown {
   position: absolute;
-  background: linear-gradient(135deg, rgba(255, 105, 180, 0.95), rgba(255, 20, 147, 0.95));
-  box-shadow: 0 8px 25px rgba(255, 20, 147, 0.25);
+  background: linear-gradient(135deg, rgba(255, 105, 180, 0.98), rgba(255, 20, 147, 0.98));
+  box-shadow: 0 10px 30px rgba(255, 20, 147, 0.3);
   display: none;
   z-index: 100;
-  border-radius: 10px;
-  margin-top: 15px;
-  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  margin-top: 10px;
+  backdrop-filter: blur(15px);
   animation: dropdownSlide 0.3s ease;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  min-width: 220px;
 }
 
 @keyframes dropdownSlide {
@@ -1022,9 +1048,23 @@ nav ul li ul li a {
   }
 }
 
+.nav-dropdown li {
+  width: 100%;
+}
+
 .nav-dropdown a {
-  padding: 12px 18px !important;
-  line-height: normal !important;
+  padding: 14px 20px !important;
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: block !important;
+  width: 100%;
+  text-align: left;
+}
+
+.nav-dropdown a:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  padding-left: 25px !important;
+  border-left: 4px solid white;
 }
 
 .nav-mobile {
@@ -1042,6 +1082,11 @@ nav ul li ul li a {
     display: block;
   }
 
+  .logo {
+    font-size: 1.3rem !important;
+    padding-left: 10px;
+  }
+
   nav {
     width: 100%;
     padding: 80px 0 15px;
@@ -1050,29 +1095,34 @@ nav ul li ul li a {
     display: none;
     flex-direction: column;
     gap: 0;
+    background: linear-gradient(135deg, rgba(255, 105, 180, 0.98), rgba(255, 20, 147, 0.98));
   }
   nav ul li {
     float: none;
     width: 100%;
   }
   nav ul li a {
-    padding: 15px 25%;
+    padding: 16px 20px;
     line-height: 20px;
     display: block;
     border-radius: 0;
-    background: rgba(255, 255, 255, 0.05);
-    margin: 2px 0;
+    background: transparent;
+    margin: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 1rem;
   }
   nav ul li ul li a {
-    padding-left: 30%;
+    padding-left: 40px;
+    font-size: 0.9rem;
   }
 
   .nav-dropdown {
     position: static;
     border-radius: 0;
     box-shadow: none;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.15);
     margin: 0;
+    border: none;
   }
   
 	.brand a img {

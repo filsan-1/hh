@@ -1,0 +1,39 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="500" height="180" viewBox="0 0 500 180">
+  <!-- Lotus flower with meditation silhouette -->
+  <g transform="translate(100, 65)">
+    <!-- Lotus petals - pink -->
+    <!-- Bottom row petals -->
+    <path d="M 0,25 Q -8,10 -15,25 Q -8,35 0,30 Z" fill="#DA7B9B" opacity="0.9"/>
+    <path d="M 0,25 Q 8,10 15,25 Q 8,35 0,30 Z" fill="#DA7B9B" opacity="0.9"/>
+    
+    <!-- Middle row petals -->
+    <path d="M -15,20 Q -25,5 -35,18 Q -25,30 -15,25 Z" fill="#DA7B9B" opacity="0.85"/>
+    <path d="M 15,20 Q 25,5 35,18 Q 25,30 15,25 Z" fill="#DA7B9B" opacity="0.85"/>
+    
+    <!-- Top/back petals -->
+    <path d="M -8,15 Q -15,0 -25,10 Q -18,22 -8,20 Z" fill="#C97A94" opacity="0.75"/>
+    <path d="M 8,15 Q 15,0 25,10 Q 18,22 8,20 Z" fill="#C97A94" opacity="0.75"/>
+    
+    <!-- Center top petal -->
+    <path d="M 0,15 Q -5,0 0,0 Q 5,0 0,15 Z" fill="#DA7B9B" opacity="0.9"/>
+    
+    <!-- Meditation figure - black silhouette -->
+    <g transform="translate(0, 8)">
+      <!-- Head -->
+      <circle cx="0" cy="0" r="7" fill="#2C2C2C"/>
+      <!-- Body/torso -->
+      <ellipse cx="0" cy="12" rx="6" ry="9" fill="#2C2C2C"/>
+      <!-- Legs in lotus position -->
+      <path d="M -6,18 Q -10,20 -12,18 M 6,18 Q 10,20 12,18" stroke="#2C2C2C" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <!-- Arms -->
+      <path d="M -6,10 Q -12,12 -10,16 M 6,10 Q 12,12 10,16" stroke="#2C2C2C" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </g>
+  </g>
+  
+  <!-- HORMONE HARMONY text -->
+  <text x="230" y="80" font-family="'Arial Black', Arial, sans-serif" font-size="42" font-weight="900" fill="#3D3D3D" letter-spacing="1">HORMONE HARMONY</text>
+  
+  <!-- Tagline -->
+  <text x="230" y="105" font-family="Arial, sans-serif" font-size="10" fill="#666666" letter-spacing="3">RESTORE YOUR INNER RHYTHM:</text>
+  <text x="290" y="120" font-family="Arial, sans-serif" font-size="10" fill="#666666" letter-spacing="3">ACHIEVE 'AIKYAM'</text>
+</svg>

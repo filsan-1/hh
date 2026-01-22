@@ -39,30 +39,43 @@
     <section class="nav-bar">
         <div class="nav-container">
             <div class="logo" style="color: white; font-weight: 700; font-size: 1.5rem; text-decoration: none;">
-                <a href="{% url 'Home:home' %}" style="display: flex; align-items: center; color: white; text-decoration: none; font-family: 'Poppins', sans-serif;">
-                    <i class="fa fa-heart" style="margin-right: 0.75rem; font-size: 1.25rem;"></i>
-                    <span>Hormone Harmony</span>
+                <a href="{% url 'Home:home' %}" style="display: flex; align-items: center; color: white; text-decoration: none; font-family: 'Poppins', sans-serif; gap: 0.75rem;">
+                    <img src="{% static 'images/hormone-harmony-logo.png' %}" alt="Hormone Harmony Logo" style="height: 50px; width: auto;">
                 </a>
             </div>
             <nav>
                 <div class="nav-mobile"><a id="nav-toggle" href="#!"><span></span></a></div>
                 <ul class="nav-list">
-                    <li><a href="{% url 'Home:home' %}">🏠 Home</a></li>
-                    <li><a href="{% url 'App_Blog:blog_list' %}">📚 Blogs</a></li>
-                    <li><a href="{% url 'App_Blog:recipe_list' %}">🍽️ Recipes</a></li>
-                    <li><a href="{% url 'Hormonal_Twins:twin_list' %}">👯 Hormonal Twins</a></li>
-                    <li><a href="{% url 'Support_Circle:circle_list' %}">🤝 Support Circles</a></li>
-                    <li><a href="{% url 'Spousal_Education:article_list' %}">👨‍👩‍👧 Spousal Ed</a></li>
-                    <li><a href="{% url 'Home:period_list' %}">📅 Periods</a></li>
-                    <li><a href="{% url 'Home:pcod' %}">💊 PCOD</a></li>
-                    <li><a href="{% url 'Home:selfcare' %}">🧘 Self-Care</a></li>
+                    <li><a href="{% url 'Home:home' %}">Home</a></li>
+                    <li><a href="#!">Content</a>
+                        <ul class="nav-dropdown">
+                            <li><a href="{% url 'App_Blog:blog_list' %}">📚 Blogs</a></li>
+                            <li><a href="{% url 'App_Blog:recipe_list' %}">🍽️ Recipes</a></li>
+                            <li><a href="{% url 'Spousal_Education:article_list' %}">📖 Education</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#!">Community</a>
+                        <ul class="nav-dropdown">
+                            <li><a href="{% url 'Hormonal_Twins:twin_list' %}">👯 Hormonal Twins</a></li>
+                            <li><a href="{% url 'Support_Circle:circle_list' %}">🤝 Support Circles</a></li>
+                            {% if user.is_authenticated %}
+                            <li><a href="{% url 'App_Messaging:conversation_list' %}">💬 Messages</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                    <li><a href="#!">Health</a>
+                        <ul class="nav-dropdown">
+                            <li><a href="{% url 'Home:period_list' %}">📅 Period Tracker</a></li>
+                            <li><a href="{% url 'Home:pcod' %}">💊 PCOS Info</a></li>
+                            <li><a href="{% url 'Home:selfcare' %}">🧘 Self-Care</a></li>
+                        </ul>
+                    </li>
                     {% if user.is_authenticated %}
-                    <li><a href="{% url 'App_Messaging:conversation_list' %}">💬 Messages</a></li>
-                    <li><a href="{% url 'App_Login:profile' %}">👤 Profile</a></li>
-                    <li><a href="{% url 'App_Login:logout' %}">🚪 Logout</a></li>
+                    <li><a href="{% url 'App_Login:profile' %}">Profile</a></li>
+                    <li><a href="{% url 'App_Login:logout' %}" class="nav-logout">Logout</a></li>
                     {% else %}
-                    <li><a href="{% url 'App_Login:signin' %}">🔐 Login</a></li>
-                    <li><a href="{% url 'App_Login:signup' %}">✨ Sign Up</a></li>
+                    <li><a href="{% url 'App_Login:signin' %}" class="nav-login">Login</a></li>
+                    <li><a href="{% url 'App_Login:signup' %}" class="nav-signup">Sign Up</a></li>
                     {% endif %}
                 </ul>
             </nav>
@@ -89,7 +102,7 @@
         <div class="footer-content">
             <div class="footer-section">
                 <div class="footer-logo">
-                    <i class="fa fa-heart"></i>
+                    <img src="{% static 'images/logo.svg' %}" alt="Hormone Harmony Logo" style="height: 50px; width: auto; margin-bottom: 1rem;">
                     <h3>Hormone Harmony</h3>
                 </div>
                 <p>Empowering women's health through connection, tracking, and community support.</p>

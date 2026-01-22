@@ -24,7 +24,7 @@
             
             <!-- Messages -->
             <div style="background: linear-gradient(135deg, #FFF5FB 0%, #FFFAF0 100%); border: 1px solid #FFD7E8; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; max-height: 550px; overflow-y: auto; min-height: 350px;">
-                {% for message in messages %}
+                {% for message in chat_messages %}
                     {% if message.sender == request.user %}
                         <div style="margin-bottom: 1.5rem; display: flex; justify-content: flex-end;">
                             <div style="background: linear-gradient(135deg, #FF69B4, #FF1493); color: white; padding: 0.75rem 1.25rem; border-radius: 18px; max-width: 70%; box-shadow: 0 2px 6px rgba(255, 20, 147, 0.2);">
