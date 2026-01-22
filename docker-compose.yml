@@ -21,7 +21,7 @@ services:
   web:
     build: .
     container_name: hh_django
-    command: sh -c "python manage.py migrate && gunicorn --bind 0.0.0.0:8000 --workers 3 --timeout 60 StainStrong.wsgi:application"
+    command: sh -c "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn --bind 0.0.0.0:8000 --workers 3 --timeout 60 StainStrong.wsgi:application"
     volumes:
       - .:/app
       - static_volume:/app/staticfiles
@@ -30,14 +30,14 @@ services:
       - "8000:8000"
     environment:
       DEBUG: "False"
-      SECRET_KEY: "your-secret-key-change-in-production"
+      DJANGO_SECRET_KEY: "${DJANGO_SECRET_KEY:-django-insecure-change-this-in-production}"
       DATABASE_URL: "postgresql://hh_user:hh_password@db:5432/hh_db"
-      ALLOWED_HOSTS: "localhost,127.0.0.1,web"
+      ALLOWED_HOSTS: "localhost,127.0.0.1,web,*.github.dev,*.githubpreview.dev"
     depends_on:
       db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
       interval: 30s
       timeout: 10s
       retries: 3

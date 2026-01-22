@@ -90,6 +90,55 @@ We take your security seriously. This application includes several layers of pro
 
 ## ⚡ Setup Guidelines
 
+### Option 1: Quick Start with Docker 🐳 (Recommended)
+
+1. Install Docker and Docker Compose:
+   - [Docker Desktop](https://docs.docker.com/get-docker/)
+   - [Docker Compose](https://docs.docker.com/compose/install/)
+
+2. Clone the repository:
+```bash
+git clone https://github.com/filsan-1/hh.git
+cd hh
+```
+
+3. Set up environment variables:
+```bash
+cp .env.docker .env
+# Edit .env and set DJANGO_SECRET_KEY
+```
+
+4. Start the application:
+```bash
+./docker-start.sh
+# OR manually:
+docker-compose up -d
+```
+
+5. Access the application at `http://localhost:8000`
+
+6. Create a superuser:
+```bash
+docker-compose exec web python manage.py createsuperuser
+```
+
+**Docker Commands:**
+```bash
+# View logs
+docker-compose logs -f web
+
+# Stop containers
+docker-compose down
+
+# Rebuild after changes
+docker-compose up -d --build
+
+# Access Django shell
+docker-compose exec web python manage.py shell
+```
+
+### Option 2: Manual Setup
+
 **Quick Start:**
 
 1. Clone the repository:
