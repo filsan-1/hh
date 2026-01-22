@@ -12,29 +12,24 @@ from django.http import HttpResponse
 import time
 
 
-# Create your views here.
-
 def rate_limit_check(request, action='login'):
-    """Check if user has exceeded rate limits"""
     ip = request.META.get('REMOTE_ADDR')
     cache_key = f'rate_limit_{action}_{ip}'
     attempts = cache.get(cache_key, 0)
     
-    if attempts >= 5:  # Max 5 attempts
+    if attempts >= 5:
         return True, attempts
     return False, attempts
 
 def increment_rate_limit(request, action='login'):
-    """Increment rate limit counter"""
     ip = request.META.get('REMOTE_ADDR')
     cache_key = f'rate_limit_{action}_{ip}'
     attempts = cache.get(cache_key, 0)
-    cache.set(cache_key, attempts + 1, 300)  # 5 minutes timeout
+    cache.set(cache_key, attempts + 1, 300)
 
 
 @require_http_methods(["GET", "POST"])
 def sign_up(request):
-    # Rate limiting check
     is_limited, attempts = rate_limit_check(request, 'signup')
     if is_limited:
         messages.error(request, 'Too many signup attempts. Please try again in 5 minutes.')
@@ -46,7 +41,6 @@ def sign_up(request):
         form = SignUpForm(data=request.POST)
         if form.is_valid():
             user = form.save()
-            # Create user profile
             from App_Login.models import UserProfile
             UserProfile.objects.get_or_create(user=user)
             registered = True
@@ -67,7 +61,6 @@ def login_page(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('Home:home'))
     
-    # Rate limiting check
     is_limited, attempts = rate_limit_check(request, 'login')
     if is_limited:
         messages.error(request, 'Too many login attempts. Please try again in 5 minutes.')
@@ -83,7 +76,6 @@ def login_page(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f'Welcome back, {user.username}!')
-                # Clear rate limit on successful login
                 cache.delete(f'rate_limit_login_{request.META.get("REMOTE_ADDR")}')
                 next_url = request.GET.get('next', 'Home:home')
                 return HttpResponseRedirect(reverse(next_url) if 'Home:' in next_url else reverse('Home:home'))
@@ -135,7 +127,6 @@ def pass_change(request):
         form = PasswordChangeForm(current_user, data=request.POST)
         if form.is_valid():
             user = form.save()
-            # Update session to prevent logout after password change
             update_session_auth_hash(request, user)
             changed = True
             messages.success(request, 'Your password has been changed successfully!')
@@ -151,13 +142,11 @@ def add_pro_pic(request):
     if request.method =='POST':
         form = ProfilePic(request.POST, request.FILES)
         if form.is_valid():
-            # Validate file size
             uploaded_file = request.FILES.get('profile_pic')
-            if uploaded_file and uploaded_file.size > 5242880:  # 5MB
+            if uploaded_file and uploaded_file.size > 5242880:
                 messages.error(request, 'File size must be less than 5MB.')
                 return render(request, 'App_Login/pro_pic_add.html',context={'form':form})
             
-            # Validate file type
             allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
             if uploaded_file and uploaded_file.content_type not in allowed_types:
                 messages.error(request, 'Only image files (JPEG, PNG, GIF, WebP) are allowed.')
@@ -177,13 +166,11 @@ def change_pro_pic(request):
     if request.method=='POST':
         form = ProfilePic(request.POST, request.FILES, instance = request.user.user_profile)
         if form.is_valid():
-            # Validate file size
             uploaded_file = request.FILES.get('profile_pic')
-            if uploaded_file and uploaded_file.size > 5242880:  # 5MB
+            if uploaded_file and uploaded_file.size > 5242880:
                 messages.error(request, 'File size must be less than 5MB.')
                 return render(request, 'App_Login/pro_pic_add.html',context={'form':form})
             
-            # Validate file type
             allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
             if uploaded_file and uploaded_file.content_type not in allowed_types:
                 messages.error(request, 'Only image files (JPEG, PNG, GIF, WebP) are allowed.')

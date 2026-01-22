@@ -59,87 +59,28 @@ Hormone Harmony is a platform where women with any hormonal issue come together 
 - [x] Responsive design for all devices
 - [x] Custom template tags for enhanced functionality
 - [x] Spousal education
-- [x] **Enterprise-level security with Argon2 password encryption**
-- [x] **Rate limiting to prevent brute force attacks**
-- [x] **Secure session management and CSRF protection**
+- [x] Secure password encryption
+- [x] Rate limiting protection
+- [x] Session management
 
-## 🔒 Security Features
+## Setup Guidelines
 
-We take your security seriously. This application includes several layers of protection:
+### Using Docker
 
-**Password Security:**
-- Your passwords are encrypted using Argon2, the most secure password hashing algorithm available today
-- All passwords are automatically hashed and can never be viewed by anyone, including administrators
-- Strong password requirements: minimum 12 characters with complexity rules
-
-**Login Protection:**
-- Rate limiting prevents brute force attacks (5 attempts per 5 minutes)
-- Automatic account lockout after multiple failed attempts
-- Secure session management with automatic timeout after 1 hour of inactivity
-
-**Data Protection:**
-- HTTPS/SSL support for encrypted communication
-- CSRF protection on all forms to prevent cross-site attacks
-- Secure cookie handling with HTTP-only flags
-- File upload validation (size and type checking)
-
-**Additional Security:**
-- Security headers to prevent clickjacking and XSS attacks
-- Content Security Policy implementation
-- Environment-based configuration to keep secrets safe
-
-## ⚡ Setup Guidelines
-
-### Option 1: Quick Start with Docker 🐳 (Recommended)
-
-1. Install Docker and Docker Compose:
-   - [Docker Desktop](https://docs.docker.com/get-docker/)
-   - [Docker Compose](https://docs.docker.com/compose/install/)
-
-2. Clone the repository:
+1. Clone and navigate to the project:
 ```bash
 git clone https://github.com/filsan-1/hh.git
 cd hh
 ```
 
-3. Set up environment variables:
+2. Start with Docker:
 ```bash
-cp .env.docker .env
-# Edit .env and set DJANGO_SECRET_KEY
-```
-
-4. Start the application:
-```bash
-./docker-start.sh
-# OR manually:
 docker-compose up -d
 ```
 
-5. Access the application at `http://localhost:8000`
+3. Access at `http://localhost:8000`
 
-6. Create a superuser:
-```bash
-docker-compose exec web python manage.py createsuperuser
-```
-
-**Docker Commands:**
-```bash
-# View logs
-docker-compose logs -f web
-
-# Stop containers
-docker-compose down
-
-# Rebuild after changes
-docker-compose up -d --build
-
-# Access Django shell
-docker-compose exec web python manage.py shell
-```
-
-### Option 2: Manual Setup
-
-**Quick Start:**
+### Manual Setup
 
 1. Clone the repository:
 ```bash
@@ -147,10 +88,10 @@ git clone https://github.com/filsan-1/hh.git
 cd hh
 ```
 
-2. Create and activate a virtual environment:
+2. Create virtual environment:
 ```bash
 python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate
 ```
 
 3. Install dependencies:
@@ -158,60 +99,33 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. Run database migrations:
+4. Run migrations:
 ```bash
 python manage.py migrate
 ```
 
-5. Create static files directory:
-```bash
-python manage.py collectstatic --noinput
-```
-
-6. Create a superuser (admin account):
+5. Create superuser:
 ```bash
 python manage.py createsuperuser
 ```
 
-7. Start the development server:
+6. Start server:
 ```bash
 python manage.py runserver
 ```
 
-8. Open your browser and go to `http://localhost:8000`
-
-**Testing Security Features:**
-
-You can verify that password encryption is working properly:
-```bash
-python manage.py check_password_security
-```
-
-This will show you which password hashing algorithm is being used (should be Argon2).
-
-
-## 🔧 Configuration
-
-For production deployment, create a `.env` file with your settings:
-```
-DJANGO_SECRET_KEY=your-secret-key-here
-DEBUG=False
-ALLOWED_HOSTS=yourdomain.com
-```
-
-See `.env.example` for more configuration options.
+7. Open `http://localhost:8000`
 
 
 
 
 
-
--
 
 
 ## Future Prospects:
 
-- Location detection and details of nearby gynecologist.
-- Adding a quiz app that will take inputs about periods and give information on what is right and wrong.
+- Location detection and details of nearby gynecologist
+- Period tracking with health insights
+- Quiz app for menstrual health education
 
 
