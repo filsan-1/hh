@@ -1,4 +1,4 @@
-FROM python:3.9.4-slim
+FROM python:3.12-slim
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -9,12 +9,18 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
+    g++ \
+    make \
+    libffi-dev \
+    libjpeg-dev \
+    libpng-dev \
+    zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt && \
-    pip install fastapi uvicorn
+    pip install fastapi uvicorn[standard]
 
 COPY . .
 
