@@ -58,7 +58,7 @@ Hormone Harmony is a platform where women with any hormonal issue come together 
 - [x] Admin dashboard for content management
 - [x] Responsive design for all devices
 - [x] Custom template tags for enhanced functionality
-- [ ] spousal education
+- [x]Spousal education
 - [ ] ⚡ Setup Guidelines
 
 Clone the repo:
