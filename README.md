@@ -58,28 +58,99 @@ Hormone Harmony is a platform where women with any hormonal issue come together 
 - [x] Admin dashboard for content management
 - [x] Responsive design for all devices
 - [x] Custom template tags for enhanced functionality
-- [x]Spousal education
-- [ ] ⚡ Setup Guidelines
+- [x] Spousal education
+- [x] **Enterprise-level security with Argon2 password encryption**
+- [x] **Rate limiting to prevent brute force attacks**
+- [x] **Secure session management and CSRF protection**
 
-Clone the repo:
+## 🔒 Security Features
 
-git clone
+We take your security seriously. This application includes several layers of protection:
 
-Create and activate a virtual environment:
+**Password Security:**
+- Your passwords are encrypted using Argon2, the most secure password hashing algorithm available today
+- All passwords are automatically hashed and can never be viewed by anyone, including administrators
+- Strong password requirements: minimum 12 characters with complexity rules
 
-python3 -m venv venv source venv/bin/activate
+**Login Protection:**
+- Rate limiting prevents brute force attacks (5 attempts per 5 minutes)
+- Automatic account lockout after multiple failed attempts
+- Secure session management with automatic timeout after 1 hour of inactivity
 
-Install dependencies:
+**Data Protection:**
+- HTTPS/SSL support for encrypted communication
+- CSRF protection on all forms to prevent cross-site attacks
+- Secure cookie handling with HTTP-only flags
+- File upload validation (size and type checking)
 
+**Additional Security:**
+- Security headers to prevent clickjacking and XSS attacks
+- Content Security Policy implementation
+- Environment-based configuration to keep secrets safe
+
+## ⚡ Setup Guidelines
+
+**Quick Start:**
+
+1. Clone the repository:
+```bash
+git clone https://github.com/filsan-1/hh.git
+cd hh
+```
+
+2. Create and activate a virtual environment:
+```bash
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install dependencies:
+```bash
 pip install -r requirements.txt
+```
 
-Apply migrations:
-
+4. Run database migrations:
+```bash
 python manage.py migrate
+```
 
-Run the development server:
+5. Create static files directory:
+```bash
+python manage.py collectstatic --noinput
+```
 
+6. Create a superuser (admin account):
+```bash
+python manage.py createsuperuser
+```
+
+7. Start the development server:
+```bash
 python manage.py runserver
+```
+
+8. Open your browser and go to `http://localhost:8000`
+
+**Testing Security Features:**
+
+You can verify that password encryption is working properly:
+```bash
+python manage.py check_password_security
+```
+
+This will show you which password hashing algorithm is being used (should be Argon2).
+
+
+## 🔧 Configuration
+
+For production deployment, create a `.env` file with your settings:
+```
+DJANGO_SECRET_KEY=your-secret-key-here
+DEBUG=False
+ALLOWED_HOSTS=yourdomain.com
+```
+
+See `.env.example` for more configuration options.
 
 
 

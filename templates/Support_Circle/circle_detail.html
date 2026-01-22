@@ -447,9 +447,15 @@
                 <ul class="member-list">
                     {% for member in circle.members.all|slice:":5" %}
                     <li class="member-item">
-                        <a href="{% url 'App_Login:profile' member.id %}" class="member-link">
-                            {{ member.get_full_name|default:member.username }}
+                        {% if member == request.user %}
+                        <a href="{% url 'App_Login:profile' %}" class="member-link">
+                            {{ member.get_full_name|default:member.username }} (You)
                         </a>
+                        {% else %}
+                        <span class="member-link">
+                            {{ member.get_full_name|default:member.username }}
+                        </span>
+                        {% endif %}
                     </li>
                     {% endfor %}
                     {% if circle.members.count > 5 %}
