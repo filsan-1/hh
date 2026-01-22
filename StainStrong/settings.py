@@ -182,9 +182,9 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 # Login/Logout URLs
-LOGIN_URL = '/account/login/'
+LOGIN_URL = '/account/signin/'
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/account/login/'
+LOGOUT_REDIRECT_URL = '/account/signin/'
 
 # Additional Security Settings
 SECURE_REFERRER_POLICY = 'same-origin'
