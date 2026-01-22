@@ -1,0 +1,43 @@
+{% extends 'Base.html' %}
+
+{% block title %}Article Categories - Spousal Education{% endblock title %}
+
+{% block body_block %}
+<div class="container mt-4 mb-5">
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 3rem 2rem; border-radius: 15px; color: white; text-align: center; margin-bottom: 3rem;">
+        <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">📚 Article Categories</h1>
+        <p style="font-size: 1.2rem; opacity: 0.95;">Explore educational content organized by topic</p>
+    </div>
+
+    <div class="row">
+        {% for category in categories %}
+        <div class="col-md-4 col-sm-6 mb-4">
+            <a href="{% url 'Spousal_Education:article_list' %}?category={{ category.slug }}" style="text-decoration: none;">
+                <div class="card h-100" style="border: none; border-radius: 15px; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15); transition: all 0.3s ease; background: linear-gradient(135deg, #f5f7ff 0%, #fef5ff 100%);">
+                    <div class="card-body text-center" style="padding: 2.5rem 1.5rem;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">{{ category.icon }}</div>
+                        <h3 style="color: #333; font-weight: 700; margin-bottom: 0.75rem;">{{ category.name }}</h3>
+                        <p style="color: #666; margin-bottom: 1rem; font-size: 0.95rem;">{{ category.description|truncatewords:15 }}</p>
+                        <div style="background: {{ category.color }}; color: white; padding: 0.5rem 1rem; border-radius: 20px; display: inline-block; font-weight: 600; font-size: 0.9rem;">
+                            {{ category.article_count }} article{{ category.article_count|pluralize }}
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <i class="fa fa-folder-open" style="font-size: 4rem; color: #ddd; margin-bottom: 1rem;"></i>
+            <p style="color: #999; font-size: 1.1rem;">No categories available yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .card:hover {
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.25) !important;
+        transform: translateY(-5px);
+    }
+</style>
+{% endblock %}

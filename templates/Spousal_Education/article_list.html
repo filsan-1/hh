@@ -1,0 +1,191 @@
+{% extends 'Base.html' %}
+{% load static %}
+
+{% block title %}Spousal Education - Understanding Women's Health{% endblock title %}
+
+{% block body_block %}
+<div class="container-fluid" style="padding: 0;">
+    <!-- Hero Section -->
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 4rem 2rem; color: white; text-align: center;">
+        <div class="container">
+            <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">👨‍👩‍👧 Spousal Education Hub</h1>
+            <p style="font-size: 1.2rem; max-width: 800px; margin: 0 auto; opacity: 0.95;">
+                Understanding your partner's health journey: PCOS, endometriosis, period phases, and more.
+                Become a supportive partner through knowledge and empathy.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <!-- Featured Articles -->
+    {% if featured_articles %}
+    <div class="mb-5">
+        <h2 style="color: #667eea; font-weight: 700; margin-bottom: 2rem;">⭐ Featured Articles</h2>
+        <div class="row">
+            {% for article in featured_articles %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100" style="border: none; border-radius: 15px; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15); transition: all 0.3s ease; background: linear-gradient(135deg, #f5f7ff 0%, #fef5ff 100%);">
+                    <div class="card-body">
+                        <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                            <span style="background: {{ article.category.color }}; color: white; padding: 0.35rem 0.85rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+                                {{ article.category.icon }} {{ article.category.name }}
+                            </span>
+                            <span style="margin-left: auto; font-size: 0.85rem; color: #999;">
+                                <i class="fa fa-eye"></i> {{ article.views_count }}
+                            </span>
+                        </div>
+                        <h4 style="color: #333; font-weight: 700; margin-bottom: 0.75rem;">
+                            <a href="{% url 'Spousal_Education:article_detail' article.slug %}" style="text-decoration: none; color: inherit;">
+                                {{ article.title }}
+                            </a>
+                        </h4>
+                        <p style="color: #666; font-size: 0.95rem; margin-bottom: 1rem;">{{ article.summary|truncatewords:20 }}</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid #eee;">
+                            <small style="color: #999;">
+                                <i class="fa fa-clock-o"></i> {{ article.estimated_read_time }} min read
+                            </small>
+                            <a href="{% url 'Spousal_Education:article_detail' article.slug %}" class="btn btn-sm" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; font-weight: 600;">
+                                Read More →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Filters and Search -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div style="background: linear-gradient(135deg, #f5f7ff 0%, #fef5ff 100%); padding: 1.5rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);">
+                <form method="get" class="row g-3">
+                    <div class="col-md-4">
+                        <input type="text" name="search" class="form-control" placeholder="🔍 Search articles..." value="{{ search_query|default:'' }}" style="border-radius: 8px; border: 1px solid #ddd;">
+                    </div>
+                    <div class="col-md-3">
+                        <select name="category" class="form-control" style="border-radius: 8px; border: 1px solid #ddd;">
+                            <option value="">All Categories</option>
+                            {% for category in categories %}
+                            <option value="{{ category.slug }}" {% if selected_category == category.slug %}selected{% endif %}>
+                                {{ category.icon }} {{ category.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select name="difficulty" class="form-control" style="border-radius: 8px; border: 1px solid #ddd;">
+                            <option value="">All Levels</option>
+                            <option value="beginner" {% if selected_difficulty == 'beginner' %}selected{% endif %}>Beginner</option>
+                            <option value="intermediate" {% if selected_difficulty == 'intermediate' %}selected{% endif %}>Intermediate</option>
+                            <option value="advanced" {% if selected_difficulty == 'advanced' %}selected{% endif %}>Advanced</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn w-100" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; font-weight: 600; border-radius: 8px;">
+                            Filter
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Links to Categories -->
+    <div class="mb-4">
+        <h3 style="color: #667eea; font-weight: 700; margin-bottom: 1.5rem;">📚 Browse by Topic</h3>
+        <div class="row">
+            {% for category in categories %}
+            <div class="col-md-3 col-sm-6 mb-3">
+                <a href="?category={{ category.slug }}" style="text-decoration: none;">
+                    <div class="card text-center" style="border: none; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 0.3s ease; background: white;">
+                        <div class="card-body" style="padding: 1.5rem;">
+                            <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">{{ category.icon }}</div>
+                            <h5 style="color: #333; font-weight: 600; margin-bottom: 0.5rem;">{{ category.name }}</h5>
+                            <small style="color: #999;">{{ category.get_article_count }} articles</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Articles Grid -->
+    <div class="mb-5">
+        <h3 style="color: #667eea; font-weight: 700; margin-bottom: 1.5rem;">📖 All Articles</h3>
+        
+        {% if articles %}
+        <div class="row">
+            {% for article in articles %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100" style="border: none; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 0.3s ease;">
+                    <div class="card-body">
+                        <div style="display: flex; align-items: center; margin-bottom: 0.75rem;">
+                            <span style="background: {{ article.category.color }}; color: white; padding: 0.3rem 0.75rem; border-radius: 15px; font-size: 0.8rem; font-weight: 600;">
+                                {{ article.category.icon }} {{ article.category.name }}
+                            </span>
+                            <span class="badge bg-secondary ms-2" style="font-size: 0.75rem;">{{ article.get_difficulty_level_display }}</span>
+                        </div>
+                        <h5 style="color: #333; font-weight: 700; margin-bottom: 0.75rem;">
+                            <a href="{% url 'Spousal_Education:article_detail' article.slug %}" style="text-decoration: none; color: inherit;">
+                                {{ article.title }}
+                            </a>
+                        </h5>
+                        <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">{{ article.summary|truncatewords:15 }}</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 0.75rem; border-top: 1px solid #eee;">
+                            <div style="font-size: 0.85rem; color: #999;">
+                                <i class="fa fa-clock-o"></i> {{ article.estimated_read_time }} min
+                                <i class="fa fa-eye ms-2"></i> {{ article.views_count }}
+                                <i class="fa fa-heart ms-2"></i> {{ article.likes_count }}
+                            </div>
+                            <a href="{% url 'Spousal_Education:article_detail' article.slug %}" class="btn btn-sm" style="background: #667eea; color: white; border: none;">Read</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if articles.has_other_pages %}
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if articles.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ articles.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_difficulty %}&difficulty={{ selected_difficulty }}{% endif %}">Previous</a>
+                </li>
+                {% endif %}
+                
+                <li class="page-item active">
+                    <span class="page-link">Page {{ articles.number }} of {{ articles.paginator.num_pages }}</span>
+                </li>
+                
+                {% if articles.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ articles.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_difficulty %}&difficulty={{ selected_difficulty }}{% endif %}">Next</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+        
+        {% else %}
+        <div class="text-center py-5">
+            <i class="fa fa-book" style="font-size: 4rem; color: #ddd; margin-bottom: 1rem;"></i>
+            <p style="color: #999; font-size: 1.1rem;">No articles found matching your criteria.</p>
+            <a href="{% url 'Spousal_Education:article_list' %}" class="btn" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none;">View All Articles</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .card:hover {
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.25) !important;
+        transform: translateY(-3px);
+    }
+</style>
+{% endblock %}

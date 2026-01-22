@@ -31,6 +31,7 @@ urlpatterns = [
     path('', include('App_Messaging.urls')),
     path('twins/', include('Hormonal_Twins.urls')),
     path('circles/', include('Support_Circle.urls')),
+    path('education/', include('Spousal_Education.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

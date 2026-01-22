@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'App_Messaging',
     'Hormonal_Twins',
     'Support_Circle',
+    'Spousal_Education',
     'crispy_forms',
     'django_cleanup.apps.CleanupConfig',
    
