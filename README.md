@@ -35,7 +35,7 @@
     
 
 ## Overview 🔨
-Hormone Harmony is a platform where women with PCOS come together to blog and share recipes. You can track your hormonal health and receive notifications about your menstrual cycles. Remember, you are not alone in the fight against PCOS. Let's debunk myths, share self-care tips, and support each other on this journey.
+Hormone Harmony is a platform where women with any hormonal issue come together to blog and share recipes. You can track your hormonal health and receive notifications about your menstrual cycles. Remember, you are not alone. Let's debunk myths, share self-care tips, and support each other on this journey.
 
 ## Features:
 
@@ -58,6 +58,7 @@ Hormone Harmony is a platform where women with PCOS come together to blog and sh
 - [x] Admin dashboard for content management
 - [x] Responsive design for all devices
 - [x] Custom template tags for enhanced functionality
+- [ ] spousal education
 - [ ] ⚡ Setup Guidelines
 
 Clone the repo:
