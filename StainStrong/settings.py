@@ -177,6 +177,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://*.github.dev',
     'https://*.githubpreview.dev',
     'https://*.app.github.dev',
+    'https://silver-space-palm-tree-v74jw9pr5563946-8000.app.github.dev',
     'http://localhost:8000',
     'http://127.0.0.1:8000',
 ]
