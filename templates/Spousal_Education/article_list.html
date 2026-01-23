@@ -4,15 +4,22 @@
 {% block title %}Spousal Education - Understanding Women's Health{% endblock title %}
 
 {% block body_block %}
-<div class="container-fluid" style="padding: 0;">
+<div class="container-fluid" style="padding: 0; margin-bottom: 3rem;">
     <!-- Hero Section -->
-    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 4rem 2rem; color: white; text-align: center;">
-        <div class="container">
-            <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">👨‍👩‍👧 Spousal Education Hub</h1>
-            <p style="font-size: 1.2rem; max-width: 800px; margin: 0 auto; opacity: 0.95;">
-                Understanding your partner's health journey: PCOS, endometriosis, period phases, and more.
-                Become a supportive partner through knowledge and empathy.
+    <div style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%); padding: 5rem 2rem; color: white; text-align: center; position: relative; overflow: hidden;">
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E'); opacity: 0.3;"></div>
+        <div class="container" style="position: relative; z-index: 1;">
+            <div style="display: inline-block; background: rgba(255,255,255,0.15); padding: 0.5rem 1.5rem; border-radius: 50px; margin-bottom: 1.5rem; backdrop-filter: blur(10px);">
+                <span style="font-size: 0.95rem; font-weight: 600; letter-spacing: 1px;">PARTNER EDUCATION</span>
+            </div>
+            <h1 style="font-size: 3rem; font-weight: 800; margin-bottom: 1.5rem; text-shadow: 0 2px 20px rgba(0,0,0,0.2);">💝 Understanding Her Health Journey</h1>
+            <p style="font-size: 1.25rem; max-width: 750px; margin: 0 auto 2rem; opacity: 0.95; line-height: 1.6;">
+                Knowledge is the foundation of support. Learn about PCOS, endometriosis, hormonal cycles, and how to be the partner she needs.
             </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
+                <a href="#articles" class="btn" style="background: white; color: #6366f1; font-weight: 700; padding: 0.75rem 2rem; border-radius: 50px; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s;">Explore Articles</a>
+                <a href="#categories" class="btn" style="background: rgba(255,255,255,0.15); color: white; font-weight: 700; padding: 0.75rem 2rem; border-radius: 50px; border: 2px solid rgba(255,255,255,0.3); backdrop-filter: blur(10px); transition: all 0.3s;">Browse Topics</a>
+            </div>
         </div>
     </div>
 </div>
@@ -20,33 +27,39 @@
 <div class="container mt-4">
     <!-- Featured Articles -->
     {% if featured_articles %}
-    <div class="mb-5">
-        <h2 style="color: #667eea; font-weight: 700; margin-bottom: 2rem;">⭐ Featured Articles</h2>
+    <div class="mb-5" id="featured">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <div style="display: inline-block; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; letter-spacing: 0.5px;">⭐ FEATURED</div>
+            <h2 style="color: #1e293b; font-weight: 800; font-size: 2.5rem; margin-bottom: 0.5rem;">Must-Read Articles</h2>
+            <p style="color: #64748b; font-size: 1.1rem;">Curated content to help you understand and support your partner</p>
+        </div>
         <div class="row">
             {% for article in featured_articles %}
             <div class="col-md-4 mb-4">
-                <div class="card h-100" style="border: none; border-radius: 15px; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15); transition: all 0.3s ease; background: linear-gradient(135deg, #f5f7ff 0%, #fef5ff 100%);">
-                    <div class="card-body">
-                        <div style="display: flex; align-items: center; margin-bottom: 1rem;">
-                            <span style="background: {{ article.category.color }}; color: white; padding: 0.35rem 0.85rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+                <div class="card h-100" style="border: none; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.08); transition: all 0.3s ease; background: white; position: relative;">
+                    <div style="height: 5px; background: linear-gradient(90deg, {{ article.category.color }}, #8b5cf6);"></div>
+                    <div class="card-body" style="padding: 2rem;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
+                            <span style="background: {{ article.category.color }}; color: white; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700; box-shadow: 0 2px 8px {{ article.category.color }}40;">
                                 {{ article.category.icon }} {{ article.category.name }}
                             </span>
-                            <span style="margin-left: auto; font-size: 0.85rem; color: #999;">
+                            <span style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;">
                                 <i class="fa fa-eye"></i> {{ article.views_count }}
                             </span>
                         </div>
-                        <h4 style="color: #333; font-weight: 700; margin-bottom: 0.75rem;">
+                        <h4 style="color: #1e293b; font-weight: 700; margin-bottom: 1rem; line-height: 1.4; font-size: 1.3rem;">
                             <a href="{% url 'Spousal_Education:article_detail' article.slug %}" style="text-decoration: none; color: inherit;">
                                 {{ article.title }}
                             </a>
                         </h4>
-                        <p style="color: #666; font-size: 0.95rem; margin-bottom: 1rem;">{{ article.summary|truncatewords:20 }}</p>
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid #eee;">
-                            <small style="color: #999;">
-                                <i class="fa fa-clock-o"></i> {{ article.estimated_read_time }} min read
-                            </small>
-                            <a href="{% url 'Spousal_Education:article_detail' article.slug %}" class="btn btn-sm" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; font-weight: 600;">
-                                Read More →
+                        <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.6;">{{ article.summary|truncatewords:18 }}</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1.25rem; border-top: 2px solid #f1f5f9;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.85rem; color: #94a3b8; font-weight: 600;">
+                                <span><i class="fa fa-clock-o"></i> {{ article.estimated_read_time }}m</span>
+                                <span><i class="fa fa-heart"></i> {{ article.likes_count }}</span>
+                            </div>
+                            <a href="{% url 'Spousal_Education:article_detail' article.slug %}" class="btn btn-sm" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; border: none; font-weight: 700; padding: 0.6rem 1.5rem; border-radius: 50px; box-shadow: 0 4px 12px #6366f140;">
+                                Read Article →
                             </a>
                         </div>
                     </div>
@@ -58,15 +71,17 @@
     {% endif %}
 
     <!-- Filters and Search -->
-    <div class="row mb-4">
+    <div class="row mb-5" id="search">
         <div class="col-md-12">
-            <div style="background: linear-gradient(135deg, #f5f7ff 0%, #fef5ff 100%); padding: 1.5rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);">
+            <div style="background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;">
                 <form method="get" class="row g-3">
                     <div class="col-md-4">
-                        <input type="text" name="search" class="form-control" placeholder="🔍 Search articles..." value="{{ search_query|default:'' }}" style="border-radius: 8px; border: 1px solid #ddd;">
+                        <label style="font-size: 0.85rem; font-weight: 700; color: #475569; margin-bottom: 0.5rem; display: block;">🔍 SEARCH</label>
+                        <input type="text" name="search" class="form-control" placeholder="Find articles about..." value="{{ search_query|default:'' }}" style="border-radius: 12px; border: 2px solid #e2e8f0; padding: 0.75rem 1rem; font-size: 0.95rem; transition: all 0.3s;" onfocus="this.style.borderColor='#6366f1'" onblur="this.style.borderColor='#e2e8f0'">
                     </div>
                     <div class="col-md-3">
-                        <select name="category" class="form-control" style="border-radius: 8px; border: 1px solid #ddd;">
+                        <label style="font-size: 0.85rem; font-weight: 700; color: #475569; margin-bottom: 0.5rem; display: block;">📁 CATEGORY</label>
+                        <select name="category" class="form-control" style="border-radius: 12px; border: 2px solid #e2e8f0; padding: 0.75rem 1rem; font-size: 0.95rem;">
                             <option value="">All Categories</option>
                             {% for category in categories %}
                             <option value="{{ category.slug }}" {% if selected_category == category.slug %}selected{% endif %}>
@@ -76,16 +91,17 @@
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <select name="difficulty" class="form-control" style="border-radius: 8px; border: 1px solid #ddd;">
+                        <label style="font-size: 0.85rem; font-weight: 700; color: #475569; margin-bottom: 0.5rem; display: block;">📊 LEVEL</label>
+                        <select name="difficulty" class="form-control" style="border-radius: 12px; border: 2px solid #e2e8f0; padding: 0.75rem 1rem; font-size: 0.95rem;">
                             <option value="">All Levels</option>
                             <option value="beginner" {% if selected_difficulty == 'beginner' %}selected{% endif %}>Beginner</option>
                             <option value="intermediate" {% if selected_difficulty == 'intermediate' %}selected{% endif %}>Intermediate</option>
                             <option value="advanced" {% if selected_difficulty == 'advanced' %}selected{% endif %}>Advanced</option>
                         </select>
                     </div>
-                    <div class="col-md-2">
-                        <button type="submit" class="btn w-100" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; font-weight: 600; border-radius: 8px;">
-                            Filter
+                    <div class="col-md-2" style="display: flex; align-items: end;">
+                        <button type="submit" class="btn w-100" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; border: none; font-weight: 700; border-radius: 12px; padding: 0.75rem; box-shadow: 0 4px 12px #6366f140; transition: all 0.3s;">
+                            Apply Filters
                         </button>
                     </div>
                 </form>
@@ -94,17 +110,23 @@
     </div>
 
     <!-- Quick Links to Categories -->
-    <div class="mb-4">
-        <h3 style="color: #667eea; font-weight: 700; margin-bottom: 1.5rem;">📚 Browse by Topic</h3>
+    <div class="mb-5" id="categories">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <h2 style="color: #1e293b; font-weight: 800; font-size: 2.5rem; margin-bottom: 0.5rem;">📚 Explore by Topic</h2>
+            <p style="color: #64748b; font-size: 1.1rem;">Find articles organized by health topics and conditions</p>
+        </div>
         <div class="row">
             {% for category in categories %}
-            <div class="col-md-3 col-sm-6 mb-3">
-                <a href="?category={{ category.slug }}" style="text-decoration: none;">
-                    <div class="card text-center" style="border: none; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 0.3s ease; background: white;">
-                        <div class="card-body" style="padding: 1.5rem;">
-                            <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">{{ category.icon }}</div>
-                            <h5 style="color: #333; font-weight: 600; margin-bottom: 0.5rem;">{{ category.name }}</h5>
-                            <small style="color: #999;">{{ category.get_article_count }} articles</small>
+            <div class="col-md-4 col-sm-6 mb-4">
+                <a href="?category={{ category.slug }}" style="text-decoration: none; display: block;">
+                    <div class="card text-center" style="border: none; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); transition: all 0.3s ease; background: white; height: 100%; position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: {{ category.color }};"></div>
+                        <div class="card-body" style="padding: 2.5rem 1.5rem;">
+                            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, {{ category.color }}15, {{ category.color }}30); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; font-size: 2.5rem;">{{ category.icon }}</div>
+                            <h5 style="color: #1e293b; font-weight: 700; margin-bottom: 0.75rem; font-size: 1.2rem;">{{ category.name }}</h5>
+                            <div style="display: inline-block; background: {{ category.color }}15; color: {{ category.color }}; padding: 0.35rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: 700;">
+                                {{ category.get_article_count }} articles
+                            </div>
                         </div>
                     </div>
                 </a>
@@ -114,34 +136,38 @@
     </div>
 
     <!-- Articles Grid -->
-    <div class="mb-5">
-        <h3 style="color: #667eea; font-weight: 700; margin-bottom: 1.5rem;">📖 All Articles</h3>
+    <div class="mb-5" id="articles">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <h2 style="color: #1e293b; font-weight: 800; font-size: 2.5rem; margin-bottom: 0.5rem;">📖 All Articles</h2>
+            <p style="color: #64748b; font-size: 1.1rem;">Browse our complete library of educational content</p>
+        </div>
         
         {% if articles %}
         <div class="row">
             {% for article in articles %}
             <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card h-100" style="border: none; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 0.3s ease;">
-                    <div class="card-body">
-                        <div style="display: flex; align-items: center; margin-bottom: 0.75rem;">
-                            <span style="background: {{ article.category.color }}; color: white; padding: 0.3rem 0.75rem; border-radius: 15px; font-size: 0.8rem; font-weight: 600;">
+                <div class="card h-100" style="border: none; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); transition: all 0.3s ease; background: white; overflow: hidden;">
+                    <div style="height: 4px; background: linear-gradient(90deg, {{ article.category.color }}, #8b5cf6);"></div>
+                    <div class="card-body" style="padding: 1.75rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                            <span style="background: {{ article.category.color }}; color: white; padding: 0.35rem 0.85rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; box-shadow: 0 2px 6px {{ article.category.color }}40;">
                                 {{ article.category.icon }} {{ article.category.name }}
                             </span>
-                            <span class="badge bg-secondary ms-2" style="font-size: 0.75rem;">{{ article.get_difficulty_level_display }}</span>
+                            <span class="badge" style="background: #e2e8f0; color: #475569; font-size: 0.7rem; font-weight: 700; padding: 0.35rem 0.75rem; border-radius: 50px;">{{ article.get_difficulty_level_display }}</span>
                         </div>
-                        <h5 style="color: #333; font-weight: 700; margin-bottom: 0.75rem;">
+                        <h5 style="color: #1e293b; font-weight: 700; margin-bottom: 0.85rem; line-height: 1.4; font-size: 1.15rem;">
                             <a href="{% url 'Spousal_Education:article_detail' article.slug %}" style="text-decoration: none; color: inherit;">
                                 {{ article.title }}
                             </a>
                         </h5>
-                        <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">{{ article.summary|truncatewords:15 }}</p>
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 0.75rem; border-top: 1px solid #eee;">
-                            <div style="font-size: 0.85rem; color: #999;">
-                                <i class="fa fa-clock-o"></i> {{ article.estimated_read_time }} min
-                                <i class="fa fa-eye ms-2"></i> {{ article.views_count }}
-                                <i class="fa fa-heart ms-2"></i> {{ article.likes_count }}
+                        <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 1.25rem; line-height: 1.6;">{{ article.summary|truncatewords:15 }}</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 2px solid #f1f5f9;">
+                            <div style="display: flex; gap: 1rem; font-size: 0.8rem; color: #94a3b8; font-weight: 600;">
+                                <span><i class="fa fa-clock-o"></i> {{ article.estimated_read_time }}m</span>
+                                <span><i class="fa fa-eye"></i> {{ article.views_count }}</span>
+                                <span><i class="fa fa-heart"></i> {{ article.likes_count }}</span>
                             </div>
-                            <a href="{% url 'Spousal_Education:article_detail' article.slug %}" class="btn btn-sm" style="background: #667eea; color: white; border: none;">Read</a>
+                            <a href="{% url 'Spousal_Education:article_detail' article.slug %}" class="btn btn-sm" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; border: none; font-weight: 700; padding: 0.5rem 1.25rem; border-radius: 50px; box-shadow: 0 3px 10px #6366f130; font-size: 0.85rem;">Read</a>
                         </div>
                     </div>
                 </div>
@@ -184,8 +210,22 @@
 
 <style>
     .card:hover {
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.25) !important;
-        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(99, 102, 241, 0.15) !important;
+        transform: translateY(-5px);
+    }
+    
+    .btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3) !important;
+    }
+    
+    @media (max-width: 768px) {
+        h1 {
+            font-size: 2rem !important;
+        }
+        h2 {
+            font-size: 1.75rem !important;
+        }
     }
 </style>
 {% endblock %}
