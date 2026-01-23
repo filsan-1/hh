@@ -302,8 +302,8 @@
     <div class="section">
         <h2>🥘 Ingredients</h2>
         <ul class="ingredients-list">
-            {% for ingredient in recipe.ingredients|linebreaks %}
-                {% if ingredient %}
+            {% for ingredient in recipe.ingredients.splitlines %}
+                {% if ingredient.strip %}
                     <li>{{ ingredient }}</li>
                 {% endif %}
             {% endfor %}
@@ -313,8 +313,8 @@
     <div class="section">
         <h2>👨‍🍳 Instructions</h2>
         <ol class="instructions-list">
-            {% for instruction in recipe.instructions|linebreaks %}
-                {% if instruction %}
+            {% for instruction in recipe.instructions.splitlines %}
+                {% if instruction.strip %}
                     <li>{{ instruction }}</li>
                 {% endif %}
             {% endfor %}

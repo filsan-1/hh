@@ -33,13 +33,13 @@ class RecipeForm(forms.ModelForm):
             'ingredients': forms.Textarea(attrs={
                 'class': 'form-control',
                 'rows': 6,
-                'placeholder': 'List ingredients (one per line)',
+                'placeholder': 'List ingredients (one per line)\nExample:\n1 cup flour\n2 eggs\n1/2 cup sugar',
                 'required': True
             }),
             'instructions': forms.Textarea(attrs={
                 'class': 'form-control',
                 'rows': 8,
-                'placeholder': 'Step-by-step cooking instructions',
+                'placeholder': 'Step-by-step cooking instructions (one step per line)\nExample:\nPreheat oven to 350°F\nMix dry ingredients\nAdd wet ingredients',
                 'required': True
             }),
             'servings': forms.NumberInput(attrs={
