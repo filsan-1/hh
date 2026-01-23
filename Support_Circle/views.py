@@ -91,6 +91,23 @@ def edit_circle(request, pk):
     return render(request, 'Support_Circle/edit_circle.html', {'form': form, 'circle': circle})
 
 @login_required
+def delete_circle(request, pk):
+    """Delete a support circle"""
+    circle = get_object_or_404(SupportCircle, pk=pk)
+    
+    if request.user != circle.creator:
+        messages.error(request, 'Only the creator can delete this circle!')
+        return redirect('Support_Circle:circle_detail', pk=pk)
+    
+    if request.method == 'POST':
+        circle_name = circle.name
+        circle.delete()
+        messages.success(request, f'Circle "{circle_name}" deleted!')
+        return redirect('Support_Circle:circle_list')
+    
+    return render(request, 'Support_Circle:circle_detail', pk=pk)
+
+@login_required
 def my_circles(request):
     """View circles user is part of"""
     circles = request.user.support_circles.all()

@@ -8,6 +8,7 @@ urlpatterns = [
     path('circle/<int:pk>/', views.CircleDetailView.as_view(), name='circle_detail'),
     path('create/', views.create_circle, name='create_circle'),
     path('edit/<int:pk>/', views.edit_circle, name='edit_circle'),
+    path('delete/<int:pk>/', views.delete_circle, name='delete_circle'),
     path('join/<int:pk>/', views.join_circle, name='join_circle'),
     path('leave/<int:pk>/', views.leave_circle, name='leave_circle'),
     path('my-circles/', views.my_circles, name='my_circles'),
