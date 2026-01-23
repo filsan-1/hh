@@ -27,7 +27,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      DEBUG: "False"
+      DEBUG: "True"
       DJANGO_SECRET_KEY: "${DJANGO_SECRET_KEY:-django-insecure-change-this-in-production}"
       DATABASE_URL: "postgresql://hh_user:hh_password@db:5432/hh_db"
       ALLOWED_HOSTS: "localhost,127.0.0.1,web,*.github.dev,*.githubpreview.dev"
