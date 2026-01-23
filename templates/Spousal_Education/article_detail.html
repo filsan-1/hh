@@ -8,11 +8,11 @@
     <div class="row">
         <div class="col-lg-8 offset-lg-2">
             <!-- Breadcrumb -->
-            <nav aria-label="breadcrumb" class="mb-3">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'Spousal_Education:article_list' %}">Education Hub</a></li>
-                    <li class="breadcrumb-item"><a href="?category={{ article.category.slug }}">{{ article.category.name }}</a></li>
-                    <li class="breadcrumb-item active">{{ article.title|truncatewords:5 }}</li>
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb" style="background: white; padding: 1rem 1.5rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                    <li class="breadcrumb-item"><a href="{% url 'Spousal_Education:article_list' %}" style="color: #6366f1; text-decoration: none; font-weight: 600;">📚 Education Hub</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'Spousal_Education:article_list' %}?category={{ article.category.slug }}" style="color: #6366f1; text-decoration: none; font-weight: 600;">{{ article.category.icon }} {{ article.category.name }}</a></li>
+                    <li class="breadcrumb-item active" style="color: #64748b;">{{ article.title|truncatewords:5 }}</li>
                 </ol>
             </nav>
 
@@ -61,8 +61,12 @@
 
             <!-- Article Content -->
             <div style="background: white; padding: 3rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); margin-bottom: 2.5rem; border: 1px solid #e2e8f0;">
-                <div style="font-size: 1.1rem; line-height: 1.9; color: #334155;">
-                    {{ article.content|linebreaks }}
+                <div class="article-content" style="font-size: 1.1rem; line-height: 1.9; color: #1e293b;">
+                    {% for paragraph in article.content.splitlines %}
+                        {% if paragraph.strip %}
+                            <p style="margin-bottom: 1.5rem; text-align: justify;">{{ paragraph }}</p>
+                        {% endif %}
+                    {% endfor %}
                 </div>
             </div>
 
@@ -74,7 +78,16 @@
                     Key Takeaways
                 </h3>
                 <div style="color: #475569; line-height: 1.9; font-size: 1.05rem;">
-                    {{ article.key_takeaways|linebreaks }}
+                    <ul style="list-style: none; padding-left: 0;">
+                        {% for takeaway in article.key_takeaways.splitlines %}
+                            {% if takeaway.strip %}
+                                <li style="margin-bottom: 1rem; padding-left: 2rem; position: relative;">
+                                    <span style="position: absolute; left: 0; color: #6366f1; font-weight: 700;">✓</span>
+                                    {{ takeaway.strip }}
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
             {% endif %}
@@ -157,11 +170,74 @@
 
             <!-- Back Button -->
             <div class="text-center">
-                <a href="{% url 'Spousal_Education:article_list' %}" class="btn" style="background: white; color: #6366f1; border: 2px solid #6366f1; font-weight: 700; padding: 0.75rem 2rem; border-radius: 50px; transition: all 0.3; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);">
+                <a href="{% url 'Spousal_Education:article_list' %}" class="btn" style="background: white; color: #6366f1; border: 2px solid #6366f1; font-weight: 700; padding: 0.75rem 2rem; border-radius: 50px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);">
                     ← Back to All Articles
                 </a>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .article-content p {
+        margin-bottom: 1.5rem;
+        text-align: justify;
+        hyphens: auto;
+        word-wrap: break-word;
+    }
+    
+    .article-content p:last-child {
+        margin-bottom: 0;
+    }
+    
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: "›";
+        color: #cbd5e1;
+        font-weight: 700;
+        font-size: 1.2rem;
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3) !important;
+    }
+    
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2) !important;
+    }
+    
+    @media (max-width: 768px) {
+        .article-content {
+            font-size: 1rem !important;
+        }
+        
+        h1 {
+            font-size: 1.75rem !important;
+        }
+        
+        .col-lg-8 {
+            padding: 0 15px;
+        }
+        
+        div[style*="padding: 3rem"] {
+            padding: 1.5rem !important;
+        }
+        
+        div[style*="padding: 2.5rem"] {
+            padding: 1.5rem !important;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .breadcrumb {
+            font-size: 0.85rem;
+        }
+        
+        .btn {
+            font-size: 0.9rem;
+            padding: 0.6rem 1.5rem !important;
+        }
+    }
+</style>
 {% endblock %}
