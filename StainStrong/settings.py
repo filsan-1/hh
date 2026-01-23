@@ -168,10 +168,11 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # CSRF Protection
 CSRF_COOKIE_HTTPONLY = False
-CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = None
 CSRF_USE_SESSIONS = False
-CSRF_COOKIE_AGE = 3600
-CSRF_COOKIE_SECURE = False  # Set to False for development/Docker
+CSRF_COOKIE_AGE = None
+CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_DOMAIN = None
 CSRF_TRUSTED_ORIGINS = [
     'https://*.github.dev',
     'https://*.githubpreview.dev',
