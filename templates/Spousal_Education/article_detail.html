@@ -4,9 +4,9 @@
 {% block title %}{{ article.title }} - Spousal Education{% endblock title %}
 
 {% block body_block %}
-<div class="container mt-4 mb-5">
+<div class="container-fluid mt-4 mb-5" style="max-width: 1400px;">
     <div class="row">
-        <div class="col-lg-8 offset-lg-2">
+        <div class="col-lg-10 offset-lg-1">
             <!-- Breadcrumb -->
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb" style="background: white; padding: 1rem 1.5rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
@@ -60,10 +60,17 @@
             {% endif %}
 
             <!-- Article Content -->
-            <div style="background: white; padding: 3rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); margin-bottom: 2.5rem; border: 1px solid #e2e8f0;">
-                <div class="article-content" style="font-size: 1.1rem; line-height: 1.9; color: #1e293b;">
-                    {{ article.content|linebreaks|safe }}
+            <div style="background: white; padding: 3.5rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); margin-bottom: 2.5rem; border: 1px solid #e2e8f0;">
+                {% if article.content %}
+                <div class="article-content" style="font-size: 1.15rem; line-height: 2; color: #1e293b; max-width: 100%;">
+                    {{ article.content|linebreaks }}
                 </div>
+                {% else %}
+                <div style="text-align: center; padding: 3rem; color: #94a3b8;">
+                    <i class="fa fa-file-text-o" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                    <p>No content available for this article yet.</p>
+                </div>
+                {% endif %}
             </div>
 
             <!-- Key Takeaways -->
@@ -226,23 +233,29 @@
     
     @media (max-width: 768px) {
         .article-content {
-            font-size: 1rem !important;
+            font-size: 1.05rem !important;
+            line-height: 1.8 !important;
         }
         
         h1 {
             font-size: 1.75rem !important;
         }
         
-        .col-lg-8 {
+        .col-lg-10 {
             padding: 0 15px;
         }
         
+        div[style*="padding: 3.5rem"],
         div[style*="padding: 3rem"] {
-            padding: 1.5rem !important;
+            padding: 1.75rem !important;
         }
         
         div[style*="padding: 2.5rem"] {
             padding: 1.5rem !important;
+        }
+        
+        .container-fluid {
+            padding: 0 10px !important;
         }
     }
     
