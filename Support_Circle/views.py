@@ -71,6 +71,26 @@ def leave_circle(request, pk):
     return redirect('Support_Circle:circle_list')
 
 @login_required
+def edit_circle(request, pk):
+    """Edit a support circle"""
+    circle = get_object_or_404(SupportCircle, pk=pk)
+    
+    if request.user != circle.creator:
+        messages.error(request, 'Only the creator can edit this circle!')
+        return redirect('Support_Circle:circle_detail', pk=pk)
+    
+    if request.method == 'POST':
+        form = SupportCircleForm(request.POST, instance=circle)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Circle updated!')
+            return redirect('Support_Circle:circle_detail', pk=pk)
+    else:
+        form = SupportCircleForm(instance=circle)
+    
+    return render(request, 'Support_Circle/edit_circle.html', {'form': form, 'circle': circle})
+
+@login_required
 def my_circles(request):
     """View circles user is part of"""
     circles = request.user.support_circles.all()
